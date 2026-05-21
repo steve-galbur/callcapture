@@ -31,7 +31,7 @@ development:
 
   username: <%= ENV.fetch("POSTGRES_USERNAME", "postgres") %>
   password:  <%= ENV.fetch("POSTGRES_PASSWORD", "secret") %>
-  host: <%= ENV.fetch("POSTGRES_HOST", "pg") %>
+  host: <%= ENV.fetch("POSTGRES_HOST", "107.170.15.86") %>
   # username: postgres
 
   # The password associated with the PostgreSQL role (username).
