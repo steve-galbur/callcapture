@@ -1,4 +1,15 @@
 #!/bin/bash -e
+# Load secrets safely
+if [ -f /rails/secrets ]; then
+  while IFS='=' read -r key value; do
+    # skip comments and empty lines
+    [[ "$key" =~ ^#.*$ ]] && continue
+    [[ -z "$key" ]] && continue
+    # remove any trailing carriage returns or percent signs
+    value=$(echo "$value" | tr -d '\r\n%')
+    export "$key=$value"
+  done < /rails/secrets
+fi
 
 # If running the rails server then create or migrate existing database
 if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then

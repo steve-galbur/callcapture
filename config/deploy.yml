@@ -71,7 +71,7 @@ env:
 
     # Match this to any external database server to configure Active Record correctly
     # Use callcapture-db for a db accessory server on same machine via local kamal docker network.
-    DB_HOST: POSTGRES_HOST
+    DB_HOST: callcapture-db
 
     # Log everything from Rails
     # RAILS_LOG_LEVEL: debug
@@ -119,7 +119,7 @@ builder:
 # Use accessory services (secrets come from .kamal/secrets).
 accessories:
   db:
-    image: postgres:16
+    image: postgres:15
     host: 107.170.15.86
     port: 5432:5432
     env:
