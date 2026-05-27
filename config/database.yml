@@ -4,14 +4,15 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS", 5) %>
 
 production:
+  <<: *default
   primary:
-    <<: *default
+    url: <%= ENV["DATABASE_URL"] %>
 
   queue:
-    <<: *primary
+    url: <%= ENV["DATABASE_URL"] %>
 
   cable:
-    <<: *primary
+    url: <%= ENV["DATABASE_URL"] %>
 
   cache:
-    <<: *primary
+    url: <%= ENV["DATABASE_URL"] %>
