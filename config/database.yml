@@ -15,12 +15,10 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  # For details on connection pooling, see Rails configuration guide
-  # https://guides.rubyonrails.org/configuring.html#database-pooling
   max_connections: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: <%= ENV.fetch("POSTGRES_USER") { postgres } %>
-  password:  <%= ENV.fetch("POSTGRES_PASSWORD") { postgres } %>
-  host: <%= ENV.fetch("POSTGRES_HOST") { callcapture-db } %>
+  username: <%= ENV.fetch("POSTGRES_USER") { "postgres" } %>
+  password: <%= ENV.fetch("POSTGRES_PASSWORD") { "postgres" } %>
+  host: <%= ENV.fetch("POSTGRES_HOST") { "callcapture-db" } %>
 
 
 development:
@@ -88,14 +86,11 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  # primary: &primary_production
-    <<: *default
-    database: callcapture_production
-    # username: callcapture
-    # password: <%= ENV["CALLCAPTURE_DATABASE_PASSWORD"] %>
-    username: <%= ENV.fetch("POSTGRES_USER") { "postgres" } %>
-    password:  <%= ENV.fetch("POSTGRES_PASSWORD") { "postgres" } %>
-    host: <%= ENV.fetch("POSTGRES_HOST") { "callcapture-db" } %>
+  <<: *default
+  database: callcapture_production
+  username: <%= ENV.fetch("POSTGRES_USER") { "postgres" } %>
+  password: <%= ENV.fetch("POSTGRES_PASSWORD") { "postgres" } %>
+  host: <%= ENV.fetch("POSTGRES_HOST") { "callcapture-db" } %>
   # cache:
   #   <<: *primary_production
   #   database: callcapture_production_cache
