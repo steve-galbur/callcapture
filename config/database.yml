@@ -88,7 +88,7 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  primary: &primary_production
+  # primary: &primary_production
     <<: *default
     database: callcapture_production
     # username: callcapture
@@ -96,15 +96,15 @@ production:
     username: <%= ENV.fetch("POSTGRES_USER") { "postgres" } %>
     password:  <%= ENV.fetch("POSTGRES_PASSWORD") { "postgres" } %>
     host: <%= ENV.fetch("POSTGRES_HOST") { "callcapture-db" } %>
-  cache:
-    <<: *primary_production
-    database: callcapture_production_cache
-    migrations_paths: db/cache_migrate
-  queue:
-    <<: *primary_production
-    database: callcapture_production_queue
-    migrations_paths: db/queue_migrate
-  cable:
-    <<: *primary_production
-    database: callcapture_production_cable
-    migrations_paths: db/cable_migrate
+  # cache:
+  #   <<: *primary_production
+  #   database: callcapture_production_cache
+  #   migrations_paths: db/cache_migrate
+  # queue:
+  #   <<: *primary_production
+  #   database: callcapture_production_queue
+  #   migrations_paths: db/queue_migrate
+  # cable:
+  #   <<: *primary_production
+  #   database: callcapture_production_cable
+  #   migrations_paths: db/cable_migrate
