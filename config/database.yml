@@ -6,13 +6,13 @@ default: &default
 production:
   <<: *default
   primary:
-    url: <%= ENV["DATABASE_URL"] %>
+    url: "postgresql://postgres:postgres@callcapture-db:5432/callcapture_production"
 
   queue:
-    url: <%= ENV["DATABASE_URL"] %>
+    url: "postgresql://postgres:postgres@callcapture-db:5432/callcapture_queue"
 
   cable:
-    url: <%= ENV["DATABASE_URL"] %>
+    url: postgresql://postgres:postgres@callcapture-db:5432/callcapture_cable"
 
   cache:
-    url: <%= ENV["DATABASE_URL"] %>
+    url: postgresql://postgres:postgres@callcapture-db:5432/callcapture_cache"
