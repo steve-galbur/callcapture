@@ -17,4 +17,3 @@ fi
 # fi
 
 # exec "${@}"
-nginx
