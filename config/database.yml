@@ -5,7 +5,7 @@ default: &default
 
 development:
   <<: *default
-  url: "postgresql://postgres:strong-password@callcapture-db:5432/callcapture_development"
+  url: "postgresql://postgres:secret@pg:5432/callcapture_development"
 
 production:
   primary:
