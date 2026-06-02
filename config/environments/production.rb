@@ -27,7 +27,7 @@ Rails.application.configure do
   config.active_support.report_deprecations = false
 
   # JOBS (NO SOLID QUEUE)
-  config.active_job.queue_adapter = :async
+  config.active_job.queue_adapter = :solid_queue
 
   # MAILER
   config.action_mailer.default_url_options = { host: "example.com" }

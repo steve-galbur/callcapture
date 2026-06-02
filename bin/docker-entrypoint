@@ -12,8 +12,10 @@ if [ -f /rails/secrets ]; then
 fi
 
 # # If running the rails server then create or migrate existing database
-# if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
-#   ./bin/rails db:prepare
-# fi
+if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
+  ./bin/rails db:prepare
+fi
+
+bundle exec rails server -p 3000 -b 0.0.0.0 &
 
 exec "${@}"

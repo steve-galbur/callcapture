@@ -3,16 +3,23 @@ default: &default
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS", 5) %>
 
-production:
+development:
   <<: *default
+  url: "postgresql://postgres:strong-password@callcapture-db:5432/callcapture_development"
+
+production:
   primary:
-    url: "postgresql://postgres:postgres@callcapture-db:5432/callcapture_production"
+    <<: *default
+    url: "postgresql://postgres:strong-password@callcapture-db:5432/callcapture_production"
 
   queue:
-    url: "postgresql://postgres:postgres@callcapture-db:5432/callcapture_queue"
+    <<: *default
+    url: "postgresql://postgres:strong-password@callcapture-db:5432/callcapture_queue"
 
   cable:
-    url: postgresql://postgres:postgres@callcapture-db:5432/callcapture_cable"
+    <<: *default
+    url: "postgresql://postgres:strong-password@callcapture-db:5432/callcapture_cable"
 
   cache:
-    url: postgresql://postgres:postgres@callcapture-db:5432/callcapture_cache"
+    <<: *default
+    url: "postgresql://postgres:strong-password@callcapture-db:5432/callcapture_cache"
