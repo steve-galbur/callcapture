@@ -124,7 +124,7 @@ accessories:
     port: 5432:5432
     env:
       clear:
-        POSTGRES_DB: POSTGRES_DB
+        POSTGRES_DB: callcapture_production
       secret:
         - POSTGRES_USER
         - POSTGRES_PASSWORD
