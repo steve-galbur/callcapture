@@ -16,6 +16,6 @@ bundle exec rails db:prepare
 
 bundle exec rails solid_queue:install
 
-bundle exec rails server -p 3000 -b 0.0.0.0 &
+# bundle exec rails server -p 3000 -b 0.0.0.0 &
 
 exec "${@}"
