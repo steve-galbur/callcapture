@@ -98,8 +98,6 @@ RUN rm -rf node_modules
 # Final stage for app image
 FROM base
 COPY nginx.conf /etc/nginx/sites-enabled/default
-COPY start.sh /rails/start.sh
-RUN chmod +x /rails/start.sh
 
 # Run and own only the runtime files as a non-root user for security
 RUN groupadd --system --gid 1000 rails && \
@@ -109,6 +107,8 @@ RUN groupadd --system --gid 1000 rails && \
 # Copy built artifacts: gems, application
 COPY --chown=rails:rails --from=build "${BUNDLE_PATH}" "${BUNDLE_PATH}"
 COPY --chown=rails:rails --from=build /rails /rails
+
+RUN chmod +x /rails/start.sh
 
 # Entrypoint prepares the database.
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
