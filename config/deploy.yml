@@ -9,9 +9,10 @@ servers:
 proxy:
   ssl: true
   host: callcapture.com
+  app_port: 3000
 
   healthcheck:
-    path: /
+    path: /up
     interval: 5
     timeout: 10
 
