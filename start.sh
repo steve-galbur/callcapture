@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+nginx -g "daemon off;"
+
 DOMAIN=callcapture.com
 EMAIL=galacheck2@gmail.com
 
@@ -23,5 +25,3 @@ fi
     sleep 12h
   done
 ) &
-
-nginx -g "daemon off;"
