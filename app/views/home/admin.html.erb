@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CallCature Admin | Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* =========================================
+           CSS VARIABLES & BRANDING
+           ========================================= */
+        :root {
+            --primary: #4F46E5; 
+            --primary-hover: #4338CA;
+            --secondary: #10B981; 
+            --danger: #EF4444;
+            --warning: #F59E0B;
+            --sidebar-bg: #0F172A;
+            --sidebar-hover: #1E293B;
+            --sidebar-text: #94A3B8;
+            --text-dark: #0F172A;
+            --text-body: #475569;
+            --bg-light: #F8FAFC;
+            --white: #ffffff;
+            --border: #E2E8F0;
+            --border-radius: 12px;
+            --transition: all 0.2s ease;
+        }
+
+        /* =========================================
+           RESET & TYPOGRAPHY
+           ========================================= */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-light); color: var(--text-body); display: flex; height: 100vh; overflow: hidden; }
+        h1, h2, h3, h4 { color: var(--text-dark); font-weight: 600; letter-spacing: -0.01em; }
+        a { text-decoration: none; }
+        ul { list-style: none; }
+
+        /* =========================================
+           LAYOUT: SIDEBAR
+           ========================================= */
+        .sidebar {
+            width: 260px;
+            background-color: var(--sidebar-bg);
+            color: var(--white);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            border-right: 1px solid #1E293B;
+        }
+        .sidebar-header {
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid #1E293B;
+        }
+        .sidebar-header svg { width: 28px; height: 28px; color: var(--primary); }
+        .sidebar-header span { font-size: 1.25rem; font-weight: 800; color: var(--white); }
+        
+        .nav-menu { padding: 24px 16px; flex-grow: 1; }
+        .nav-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--sidebar-text); margin-bottom: 12px; padding-left: 12px; font-weight: 600; }
+        .nav-item {
+            display: flex; align-items: center; gap: 12px; padding: 12px; margin-bottom: 4px;
+            color: var(--sidebar-text); border-radius: 8px; cursor: pointer; transition: var(--transition);
+        }
+        .nav-item svg { width: 20px; height: 20px; }
+        .nav-item:hover, .nav-item.active { background-color: var(--sidebar-hover); color: var(--white); }
+        .nav-item.active { border-left: 3px solid var(--primary); border-radius: 0 8px 8px 0; }
+
+        .sidebar-footer { padding: 24px 16px; border-top: 1px solid #1E293B; }
+        .user-profile { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+        .avatar { width: 40px; height: 40px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--white); font-weight: 600; }
+        .user-info h4 { color: var(--white); font-size: 0.9rem; margin-bottom: 2px; }
+        .user-info p { color: var(--sidebar-text); font-size: 0.8rem; }
+
+        /* =========================================
+           LAYOUT: MAIN CONTENT
+           ========================================= */
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* Top Header */
+        .top-header {
+            height: 72px;
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+        }
+        .page-title { font-size: 1.25rem; font-weight: 600; color: var(--text-dark); }
+        .header-actions { display: flex; align-items: center; gap: 20px; }
+        .btn-create { background: var(--primary); color: var(--white); padding: 8px 16px; border-radius: 6px; font-weight: 500; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; cursor: pointer; border: none; transition: var(--transition); }
+        .btn-create:hover { background: var(--primary-hover); }
+        
+        /* View Container */
+        .view-container {
+            padding: 32px;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+        .view { display: none; animation: fadeIn 0.3s ease; }
+        .view.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* =========================================
+           COMPONENTS
+           ========================================= */
+        /* Stats Grid */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; margin-bottom: 32px; }
+        .stat-card { background: var(--white); padding: 24px; border-radius: var(--border-radius); border: 1px solid var(--border); display: flex; align-items: center; gap: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .stat-icon { width: 56px; height: 56px; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+        .stat-icon.blue { background: #EEF2FF; color: var(--primary); }
+        .stat-icon.green { background: #D1FAE5; color: var(--secondary); }
+        .stat-icon.yellow { background: #FEF3C7; color: var(--warning); }
+        .stat-info h3 { font-size: 1.75rem; margin-bottom: 4px; }
+        .stat-info p { font-size: 0.875rem; color: var(--text-body); }
+        .stat-trend { font-size: 0.75rem; font-weight: 600; margin-top: 4px; display: inline-block; }
+        .trend-up { color: var(--secondary); }
+
+        /* Cards & Tables */
+        .card { background: var(--white); border-radius: var(--border-radius); border: 1px solid var(--border); box-shadow: 0 2px 4px rgba(0,0,0,0.02); overflow: hidden; margin-bottom: 32px; }
+        .card-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .card-title { font-size: 1.1rem; font-weight: 600; color: var(--text-dark); }
+        
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th { padding: 16px 24px; background: #F8FAFC; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-body); border-bottom: 1px solid var(--border); }
+        td { padding: 16px 24px; border-bottom: 1px solid var(--border); font-size: 0.9rem; color: var(--text-dark); vertical-align: middle; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: #F8FAFC; }
+
+        /* Badges */
+        .badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 50px; font-size: 0.75rem; font-weight: 600; }
+        .badge-success { background: #D1FAE5; color: #065F46; }
+        .badge-active { background: #EEF2FF; color: var(--primary); }
+        .badge-paused { background: #F1F5F9; color: var(--text-body); }
+        
+        .phone-verified { display: flex; align-items: center; gap: 8px; font-weight: 500; }
+        .phone-verified svg { width: 16px; height: 16px; color: var(--secondary); }
+
+        /* Forms */
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 0.875rem; font-weight: 500; color: var(--text-dark); margin-bottom: 8px; }
+        .form-control { width: 100%; padding: 12px 16px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 0.95rem; }
+        .form-control:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
+        
+        /* Action Icons */
+        .action-btns { display: flex; gap: 12px; }
+        .action-btns svg { width: 18px; height: 18px; color: var(--text-body); cursor: pointer; transition: var(--transition); }
+        .action-btns svg:hover { color: var(--primary); }
+
+        /* Billing Block */
+        .billing-box { border: 1px solid var(--primary); background: #EEF2FF; padding: 24px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .billing-box h4 { color: var(--primary); margin-bottom: 4px; }
+        .billing-box p { font-size: 0.9rem; color: #4338CA; }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <rect x="7" y="7" width="3" height="3"></rect>
+                <rect x="14" y="7" width="3" height="3"></rect>
+                <rect x="7" y="14" width="3" height="3"></rect>
+                <rect x="14" y="14" width="3" height="3"></rect>
+            </svg>
+            <span>CallCature</span>
+        </div>
+
+        <div class="nav-menu">
+            <div class="nav-label">Main Menu</div>
+            <div class="nav-item active" onclick="switchView('dashboard', this)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                Dashboard
+            </div>
+            <div class="nav-item" onclick="switchView('campaigns', this)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                QR Campaigns
+            </div>
+            <div class="nav-item" onclick="switchView('leads', this)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                Verified Leads
+            </div>
+
+            <div class="nav-label" style="margin-top: 32px;">System</div>
+            <div class="nav-item" onclick="switchView('settings', this)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                Settings & Billing
+            </div>
+            <a href="javascript:alert('Logging out...')" class="nav-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                Log Out
+            </a>
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <div class="avatar">GC</div>
+                <div class="user-info">
+                    <h4>Galacheck</h4>
+                    <p>galacheck2@gmail.com</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        
+        <!-- TOP HEADER -->
+        <header class="top-header">
+            <div class="page-title" id="top-title">Dashboard Overview</div>
+            <div class="header-actions">
+                <button class="btn-create" onclick="alert('Creating New QR Campaign...')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    New Campaign
+                </button>
+            </div>
+        </header>
+
+        <!-- VIEWS CONTAINER -->
+        <div class="view-container">
+            
+            <!-- VIEW 1: DASHBOARD -->
+            <div id="view-dashboard" class="view active">
+                
+                <!-- Stats Row -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon blue">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="28"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><rect x="7" y="7" width="3" height="3"></rect><rect x="14" y="7" width="3" height="3"></rect><rect x="7" y="14" width="3" height="3"></rect><rect x="14" y="14" width="3" height="3"></rect></svg>
+                        </div>
+                        <div class="stat-info">
+                            <h3>12,450</h3>
+                            <p>Total QR Scans</p>
+                            <span class="stat-trend trend-up">↑ 14% this week</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="28"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                        </div>
+                        <div class="stat-info">
+                            <h3>3,184</h3>
+                            <p>Verified Phone Leads</p>
+                            <span class="stat-trend trend-up">↑ 22% this week</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon yellow">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="28"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                        </div>
+                        <div class="stat-info">
+                            <h3>25.5%</h3>
+                            <p>Avg. Conversion Rate</p>
+                            <span class="stat-trend trend-up">↑ 2.1% this week</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity Table -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Recent Verified Leads</div>
+                        <a href="#" onclick="switchView('leads', document.querySelectorAll('.nav-item')[2])" style="font-size: 0.875rem; color: var(--primary); font-weight: 600;">View All &rarr;</a>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Phone Number</th>
+                                <th>Campaign Source</th>
+                                <th>Date & Time</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="phone-verified">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                        +373 60 *** 499
+                                    </div>
+                                </td>
+                                <td>Summer Print Ad '24</td>
+                                <td>Oct 24, 14:32</td>
+                                <td><span class="badge badge-success">Verified</span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="phone-verified">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                        +44 7911 *** 123
+                                    </div>
+                                </td>
+                                <td>Restaurant Table Menu</td>
+                                <td>Oct 24, 13:15</td>
+                                <td><span class="badge badge-success">Verified</span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="phone-verified">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                        +1 555 *** 892
+                                    </div>
+                                </td>
+                                <td>Real Estate Billboard #1</td>
+                                <td>Oct 24, 11:45</td>
+                                <td><span class="badge badge-success">Verified</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- VIEW 2: QR CAMPAIGNS -->
+            <div id="view-campaigns" class="view">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Active QR Campaigns</div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Campaign Name</th>
+                                <th>Destination URL</th>
+                                <th>Scans</th>
+                                <th>Leads</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Summer Print Ad '24</strong></td>
+                                <td><a href="#" style="color: var(--primary);">example.com/promo-summer</a></td>
+                                <td>5,204</td>
+                                <td>1,432</td>
+                                <td><span class="badge badge-active">Active</span></td>
+                                <td>
+                                    <div class="action-btns">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" title="Download QR"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" title="Edit URL"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Restaurant Table Menu</strong></td>
+                                <td><a href="#" style="color: var(--primary);">menu.example.com</a></td>
+                                <td>3,110</td>
+                                <td>950</td>
+                                <td><span class="badge badge-active">Active</span></td>
+                                <td>
+                                    <div class="action-btns">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Event Reg - Fall Expo</strong></td>
+                                <td><a href="#" style="color: var(--primary);">expo.com/register</a></td>
+                                <td>1,450</td>
+                                <td>210</td>
+                                <td><span class="badge badge-paused">Paused</span></td>
+                                <td>
+                                    <div class="action-btns">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- VIEW 3: VERIFIED LEADS -->
+            <div id="view-leads" class="view">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Lead Database</div>
+                        <button class="btn-create" style="background: var(--white); color: var(--text-dark); border: 1px solid var(--border);" onclick="alert('Exporting CSV...')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                            Export CSV
+                        </button>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Verified Phone Number</th>
+                                <th>Original Campaign</th>
+                                <th>Verification Date</th>
+                                <th>Destination URL Hit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Generate 6 dummy rows for visual bulk -->
+                            <script>
+                                const leads = [
+                                    { phone: '+373 60 258 499', camp: 'Summer Print Ad \'24', date: 'Oct 24, 2024 - 14:32', url: '/promo-summer' },
+                                    { phone: '+44 7911 123 456', camp: 'Restaurant Table Menu', date: 'Oct 24, 2024 - 13:15', url: '/menu' },
+                                    { phone: '+1 555 892 110', camp: 'Real Estate Billboard #1', date: 'Oct 24, 2024 - 11:45', url: '/listing-88' },
+                                    { phone: '+49 151 2345 6789', camp: 'Product Packaging V2', date: 'Oct 23, 2024 - 18:20', url: '/warranty-reg' },
+                                    { phone: '+33 6 12 34 56 78', camp: 'Summer Print Ad \'24', date: 'Oct 23, 2024 - 15:10', url: '/promo-summer' },
+                                    { phone: '+373 69 111 222', camp: 'Local Store Window', date: 'Oct 23, 2024 - 09:05', url: '/discount-code' }
+                                ];
+                                leads.forEach(l => {
+                                    document.write(`
+                                        <tr>
+                                            <td>
+                                                <div class="phone-verified">
+                                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                                    ${l.phone}
+                                                </div>
+                                            </td>
+                                            <td>${l.camp}</td>
+                                            <td style="color: #64748B;">${l.date}</td>
+                                            <td style="color: #64748B;">${l.url}</td>
+                                        </tr>
+                                    `);
+                                });
+                            </script>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- VIEW 4: SETTINGS & BILLING -->
+            <div id="view-settings" class="view">
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
+                    <!-- Account Details -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Account Details</div>
+                        </div>
+                        <div style="padding: 24px;">
+                            <form onsubmit="event.preventDefault(); alert('Saved!');">
+                                <div class="form-group">
+                                    <label>Company Name</label>
+                                    <input type="text" class="form-control" value="Galacheck Agency">
+                                </div>
+                                <div class="form-group">
+                                    <label>Contact Email</label>
+                                    <input type="email" class="form-control" value="galacheck2@gmail.com">
+                                </div>
+                                <div class="form-group">
+                                    <label>Support Phone / WhatsApp</label>
+                                    <input type="tel" class="form-control" value="+37360258499">
+                                </div>
+                                <button type="submit" class="btn-create">Save Changes</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Billing & Plan -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Billing & Subscription</div>
+                        </div>
+                        <div style="padding: 24px;">
+                            <div class="billing-box">
+                                <div>
+                                    <h4>One Simple Plan</h4>
+                                    <p>€49 / month</p>
+                                </div>
+                                <span class="badge badge-success">Active</span>
+                            </div>
+                            
+                            <ul style="margin-top: 24px; font-size: 0.9rem; color: var(--text-body); line-height: 2;">
+                                <li>✔ Unlimited QR Codes</li>
+                                <li>✔ Unlimited Campaigns</li>
+                                <li>✔ Verified Phone Leads & SMS PINs</li>
+                                <li><strong>Next billing date:</strong> Nov 24, 2024</li>
+                            </ul>
+
+                            <div style="margin-top: 32px; border-top: 1px solid var(--border); padding-top: 24px;">
+                                <button class="btn-create" style="background: var(--white); color: var(--text-dark); border: 1px solid var(--border); width: 100%; justify-content: center;">Manage Payment Methods</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <!-- SPA NAVIGATION LOGIC -->
+    <script>
+        function switchView(viewId, element) {
+            // 1. Hide all views
+            const views = document.querySelectorAll('.view');
+            views.forEach(v => v.classList.remove('active'));
+            
+            // 2. Show target view
+            document.getElementById('view-' + viewId).classList.add('active');
+            
+            // 3. Update sidebar active state
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(n => n.classList.remove('active'));
+            element.classList.add('active');
+
+            // 4. Update Header Title
+            const titles = {
+                'dashboard': 'Dashboard Overview',
+                'campaigns': 'QR Campaigns Management',
+                'leads': 'Verified Leads Database',
+                'settings': 'Account & Billing Settings'
+            };
+            document.getElementById('top-title').innerText = titles[viewId];
+        }
+    </script>
+</body>
+</html>

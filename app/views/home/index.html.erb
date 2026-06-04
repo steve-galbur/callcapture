@@ -3,199 +3,773 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CallCapture | Coming Soon</title>
-
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L675FC2T41"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-L675FC2T41');
-    </script>
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>CallCature | Smart QR Lead Capture & Redirect Platform</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
-                    colors: { primary: '#4F46E5', secondary: '#10B981' },
-                    animation: {
-                        'blob': 'blob 7s infinite',
-                    },
-                    keyframes: {
-                        blob: {
-                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
-                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
-                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
-                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    <!-- PAYPAL SDK (Replace 'test' with your live PayPal Client ID linked to +37360258499) -->
+    <script src="https://www.paypal.com/sdk/js?client-id=test&currency=EUR"></script>
 
     <style>
-        /* Multi-Language Logic */
+        /* =========================================
+           CSS VARIABLES & BRANDING
+           ========================================= */
+        :root {
+            --primary: #4F46E5; 
+            --primary-hover: #4338CA;
+            --secondary: #10B981; 
+            --text-dark: #0F172A;
+            --text-body: #475569;
+            --bg-light: #F8FAFC;
+            --white: #ffffff;
+            --border-radius: 16px;
+            --transition: all 0.3s ease;
+        }
+
+        /* =========================================
+           RESET & TYPOGRAPHY
+           ========================================= */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-body);
+            line-height: 1.6;
+            background-color: var(--white);
+            -webkit-font-smoothing: antialiased;
+        }
+        h1, h2, h3, h4 { color: var(--text-dark); font-weight: 700; line-height: 1.2; letter-spacing: -0.02em; }
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; }
+        img { max-width: 100%; height: auto; display: block; }
+
+        /* =========================================
+           LANGUAGE SWITCHER LOGIC (SCALABLE)
+           ========================================= */
         html:not([lang="en"]) .en { display: none !important; }
         html:not([lang="ru"]) .ru { display: none !important; }
         html:not([lang="ro"]) .ro { display: none !important; }
 
-        /* Language Switcher Styling */
-        .lang-btn { transition: all 0.2s ease; }
+        .lang-switcher {
+            display: flex;
+            background: var(--bg-light);
+            border-radius: 50px;
+            padding: 4px;
+            border: 1px solid #E2E8F0;
+        }
+        .lang-btn {
+            background: transparent;
+            border: none;
+            padding: 4px 10px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-body);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
         .lang-btn.active {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-            border-color: rgba(255,255,255,0.2);
+            background: var(--white);
+            color: var(--primary);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* =========================================
+           LAYOUT & UTILITIES
+           ========================================= */
+        .container { width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+        .section { padding: 96px 0; scroll-margin-top: 80px; } 
+        .bg-light { background-color: var(--bg-light); }
+        .text-center { text-align: center; }
+        .section-header { margin-bottom: 56px; text-align: center; max-width: 700px; margin-left: auto; margin-right: auto; }
+        .section-header h2 { font-size: 2.5rem; margin-bottom: 16px; }
+        .section-header p { font-size: 1.125rem; color: var(--text-body); }
+
+        /* =========================================
+           BUTTONS & CTAs
+           ========================================= */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 14px 28px; font-weight: 600; border-radius: 8px;
+            cursor: pointer; transition: var(--transition); font-size: 1rem;
+            border: 2px solid transparent; width: max-content;
+        }
+        .btn-full { width: 100%; }
+        .btn-primary { background-color: var(--primary); color: var(--white); box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2); }
+        .btn-primary:hover { background-color: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3); color: var(--white) !important; }
+        .btn-secondary { background-color: var(--white); color: var(--text-dark); border-color: #E2E8F0; }
+        .btn-secondary:hover { border-color: var(--text-dark); background-color: var(--bg-light); }
+
+        /* =========================================
+           HEADER & NAVIGATION
+           ========================================= */
+        header {
+            padding: 20px 0; background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px); border-bottom: 1px solid #F1F5F9;
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.5rem; font-weight: 800; color: var(--text-dark); display: flex; align-items: center; gap: 8px; }
+        .logo svg { width: 28px; height: 28px; color: var(--primary); }
+        .nav-right { display: flex; align-items: center; gap: 32px; }
+        .nav-links { display: flex; gap: 32px; align-items: center; }
+        .nav-links a { font-weight: 500; color: var(--text-body); }
+        .nav-links a:hover { color: var(--primary); }
+
+        /* =========================================
+           HERO SECTION
+           ========================================= */
+        .hero { padding: 80px 0 100px; background: linear-gradient(135deg, var(--bg-light) 0%, var(--white) 100%); overflow: hidden; }
+        .hero-inner { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 60px; align-items: center; }
+        .hero-badge { display: inline-flex; align-items: center; gap: 8px; background-color: #EEF2FF; padding: 6px 16px; border-radius: 50px; font-size: 0.875rem; font-weight: 600; color: var(--primary); margin-bottom: 24px; border: 1px solid #C7D2FE; }
+        .hero h1 { font-size: 3.5rem; margin-bottom: 24px; color: var(--text-dark); line-height: 1.1; }
+        .hero p { font-size: 1.125rem; margin-bottom: 40px; color: var(--text-body); max-width: 550px; }
+        .hero-buttons { display: flex; gap: 16px; }
+        .hero-image-wrapper { position: relative; }
+        .hero-img { border-radius: var(--border-radius); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); border: 1px solid #E2E8F0; }
+        .floating-ui {
+            position: absolute; bottom: -20px; left: -30px; background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px); padding: 16px 24px; border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); border: 1px solid #E2E8F0;
+            display: flex; align-items: center; gap: 16px; animation: float 4s ease-in-out infinite;
+        }
+        .floating-ui .icon { width: 40px; height: 40px; background: #D1FAE5; color: var(--secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .floating-ui .icon svg { width: 20px; height: 20px; }
+        .floating-ui .text strong { display: block; color: var(--text-dark); font-size: 0.95rem; }
+        .floating-ui .text span { color: var(--secondary); font-size: 0.85rem; font-weight: 600; }
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
+
+        /* =========================================
+           HOW IT WORKS & FEATURES
+           ========================================= */
+        .workflow-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; position: relative; }
+        .workflow-step { background: var(--white); padding: 40px 32px; border-radius: var(--border-radius); border: 1px solid #E2E8F0; text-align: center; position: relative; z-index: 2; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); }
+        .step-number { width: 48px; height: 48px; background: var(--primary); color: var(--white); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight: 700; margin: 0 auto 24px auto; box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3); }
+        .workflow-step h3 { margin-bottom: 12px; font-size: 1.25rem; }
+        .workflow-step p { font-size: 0.95rem; }
+        @media (min-width: 769px) { .workflow-step:not(:last-child)::after { content: ''; position: absolute; top: 64px; right: -30px; width: 60px; height: 2px; background: #CBD5E1; z-index: 1; } }
+
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px; margin-bottom: 40px; }
+        .feature-card { background: var(--white); padding: 32px; border-radius: var(--border-radius); transition: var(--transition); border: 1px solid #E2E8F0; }
+        .feature-card:hover { box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); transform: translateY(-4px); border-color: var(--primary); }
+        .feature-icon { width: 48px; height: 48px; background: #EEF2FF; color: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; }
+        .feature-icon svg { width: 24px; height: 24px; }
+        .feature-card h3 { margin-bottom: 12px; font-size: 1.25rem; }
+        .dashboard-preview { margin-top: 40px; border-radius: var(--border-radius); overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2); border: 1px solid #E2E8F0; }
+        .dashboard-preview img { width: 100%; object-fit: cover; }
+
+        /* =========================================
+           SPLIT USE CASES SECTION
+           ========================================= */
+        .use-case-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+        .use-case-img { border-radius: var(--border-radius); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1); }
+        .use-cases-tags { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+        .use-case-tag { background: var(--bg-light); border: 1px solid #E2E8F0; padding: 10px 20px; border-radius: 50px; font-size: 0.95rem; font-weight: 500; color: var(--text-dark); }
+
+        /* =========================================
+           PRICING & SIGNUP SECTION
+           ========================================= */
+        .pricing-signup-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: flex-start;
+        }
+        .pricing-card {
+            background: var(--text-dark);
+            color: var(--white);
+            padding: 48px;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .pricing-card h3 { color: var(--white); font-size: 1.5rem; margin-bottom: 16px; }
+        .pricing-card .price { font-size: 4rem; font-weight: 800; line-height: 1; margin-bottom: 16px; }
+        .pricing-card .price span { font-size: 1.25rem; font-weight: 500; color: #94A3B8; }
+        .pricing-card .tagline { color: #CBD5E1; font-size: 1.125rem; margin-bottom: 32px; border-bottom: 1px solid #334155; padding-bottom: 32px; }
+        .feature-list li { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; font-size: 1.05rem; }
+        .feature-list li svg { width: 24px; height: 24px; color: var(--secondary); flex-shrink: 0; }
+
+        .signup-form-card {
+            background: var(--white);
+            padding: 48px;
+            border-radius: 24px;
+            border: 1px solid #E2E8F0;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
+            min-height: 550px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .signup-form-card h3 { font-size: 1.75rem; margin-bottom: 8px; color: var(--text-dark); }
+        .signup-form-card p { color: var(--text-body); margin-bottom: 32px; }
+        .form-group { margin-bottom: 20px; text-align: left; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.95rem; color: var(--text-dark); }
+        .form-control { width: 100%; padding: 14px 16px; border: 1px solid #CBD5E1; border-radius: 8px; font-size: 1rem; font-family: inherit; transition: var(--transition); }
+        .form-control:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
+
+        /* PayPal Container styling */
+        #paypal-button-container {
+            margin-top: 20px;
+            min-height: 150px;
+            display: none; /* Hidden until step 1 is done */
+        }
+
+        /* Form Success Message State */
+        .form-success {
+            display: none;
+            text-align: center;
+            padding: 40px 0;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .form-success svg { width: 64px; height: 64px; color: var(--secondary); margin-bottom: 24px; }
+        .form-success h3 { font-size: 2rem; color: var(--text-dark); margin-bottom: 12px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* =========================================
+           DARK CTA / CONTACT SECTION
+           ========================================= */
+        .cta-section {
+            background: var(--text-dark);
+            background-image: radial-gradient(circle at top right, rgba(79, 70, 229, 0.2), transparent);
+            color: var(--white);
+            text-align: center;
+            padding: 100px 24px;
+            border-radius: 24px;
+            margin: 0 24px 80px 24px;
+        }
+        .cta-section h2 { color: var(--white); margin-bottom: 24px; font-size: 3rem; }
+        .cta-section p { color: #94A3B8; margin-bottom: 40px; font-size: 1.25rem; max-width: 600px; margin-left: auto; margin-right: auto; }
+        .contact-methods { display: flex; justify-content: center; gap: 32px; margin-top: 48px; flex-wrap: wrap; }
+        .contact-item { display: flex; align-items: center; gap: 12px; color: var(--white); }
+        .contact-item svg { width: 24px; height: 24px; color: var(--secondary); }
+        .contact-item a { font-weight: 500; }
+        .contact-item a:hover { color: var(--secondary); }
+
+        /* =========================================
+           FOOTER
+           ========================================= */
+        footer { padding: 40px 0; text-align: center; border-top: 1px solid #E2E8F0; }
+        footer p { color: #64748B; font-size: 0.875rem; }
+
+        /* =========================================
+           MOBILE RESPONSIVENESS
+           ========================================= */
+        @media (max-width: 992px) {
+            .hero-inner, .use-case-inner, .pricing-signup-wrapper { grid-template-columns: 1fr; gap: 40px; }
+            .hero-image-wrapper { margin-top: 20px; }
+            .floating-ui { left: 20px; bottom: 20px; }
+            .pricing-card, .signup-form-card { padding: 32px; }
+        }
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .hero-buttons { flex-direction: column; width: 100%; }
+            .hero-buttons .btn { width: 100%; }
+            .nav-links { display: none; }
+            .workflow-grid { grid-template-columns: 1fr; }
+            .cta-section h2 { font-size: 2rem; }
+            .cta-section { padding: 60px 24px; margin: 0 0 40px 0; border-radius: 0; }
+            .contact-methods { flex-direction: column; align-items: center; gap: 16px; }
         }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-300 min-h-screen flex flex-col relative overflow-hidden font-sans selection:bg-indigo-500/30 selection:text-indigo-200">
-
-    <!-- Ambient Background Glows -->
-    <div class="absolute top-0 -left-10 w-96 h-96 bg-indigo-600 rounded-full mix-blend-screen filter blur-[150px] opacity-20 animate-blob"></div>
-    <div class="absolute top-20 -right-10 w-96 h-96 bg-purple-600 rounded-full mix-blend-screen filter blur-[150px] opacity-20 animate-blob" style="animation-delay: 2s;"></div>
-    <div class="absolute -bottom-32 left-1/2 -translate-x-1/2 w-96 h-96 bg-emerald-600 rounded-full mix-blend-screen filter blur-[150px] opacity-10 animate-blob" style="animation-delay: 4s;"></div>
+<body>
 
     <!-- HEADER -->
-    <header class="relative z-20 container mx-auto px-6 py-6 flex flex-wrap justify-between items-center gap-4">
-        <!-- Logo -->
-        <div class="flex items-center gap-2 text-2xl font-extrabold text-white tracking-tight">
-            <svg class="w-8 h-8 text-indigo-500 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                <rect x="7" y="7" width="3" height="3"></rect>
-                <rect x="14" y="7" width="3" height="3"></rect>
-                <rect x="7" y="14" width="3" height="3"></rect>
-                <rect x="14" y="14" width="3" height="3"></rect>
-            </svg>
-            CallCapture
-        </div>
+    <header>
+        <div class="container nav-container">
+            <div class="logo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <rect x="7" y="7" width="3" height="3"></rect>
+                    <rect x="14" y="7" width="3" height="3"></rect>
+                    <rect x="7" y="14" width="3" height="3"></rect>
+                    <rect x="14" y="14" width="3" height="3"></rect>
+                </svg>
+                CallCature
+            </div>
+            
+            <div class="nav-right">
+                <nav class="nav-links">
+                    <a href="#how-it-works">
+                        <span class="en">How It Works</span><span class="ru">Как это работает</span><span class="ro">Cum funcționează</span>
+                    </a>
+                    <a href="#features">
+                        <span class="en">Features</span><span class="ru">Возможности</span><span class="ro">Funcționalități</span>
+                    </a>
+                    <a href="#pricing">
+                        <span class="en">Pricing</span><span class="ru">Цены</span><span class="ro">Prețuri</span>
+                    </a>
+                    <a href="#contact" class="btn btn-secondary" style="padding: 10px 20px;">
+                        <span class="en">Contact</span><span class="ru">Контакты</span><span class="ro">Contact</span>
+                    </a>
+                </nav>
 
-        <!-- Language Switcher -->
-        <div class="flex bg-slate-900/50 backdrop-blur-sm p-1 rounded-full border border-slate-800">
-            <button class="lang-btn active px-4 py-1.5 text-xs font-semibold text-slate-400 border border-transparent rounded-full" id="btn-en" onclick="setLanguage('en')">EN</button>
-            <button class="lang-btn px-4 py-1.5 text-xs font-semibold text-slate-400 border border-transparent rounded-full" id="btn-ro" onclick="setLanguage('ro')">RO</button>
-            <button class="lang-btn px-4 py-1.5 text-xs font-semibold text-slate-400 border border-transparent rounded-full" id="btn-ru" onclick="setLanguage('ru')">RU</button>
+                <!-- LANGUAGE SWITCHER -->
+                <div class="lang-switcher">
+                    <button class="lang-btn active" id="btn-en" onclick="setLanguage('en')">EN</button>
+                    <button class="lang-btn" id="btn-ro" onclick="setLanguage('ro')">RO</button>
+                    <button class="lang-btn" id="btn-ru" onclick="setLanguage('ru')">RU</button>
+                </div>
+            </div>
         </div>
     </header>
 
-    <!-- MAIN HERO CONTENT -->
-    <main class="flex-grow flex items-center justify-center relative z-10 px-4 sm:px-6 py-12">
-        <div class="max-w-4xl mx-auto text-center w-full">
-            
-            <!-- Launching Soon Badge -->
-            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 backdrop-blur-sm text-sm font-medium text-indigo-300 mb-8 max-w-full">
-                <span class="relative flex h-2.5 w-2.5 flex-shrink-0">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-indigo-500"></span>
-                </span>
-                <span class="en truncate">Platform Launching Soon</span>
-                <span class="ru truncate">Запуск платформы скоро</span>
-                <span class="ro truncate">Platforma se lansează curând</span>
-            </div>
-
-            <!-- Headline -->
-            <h1 class="text-4xl sm:text-5xl md:text-7xl font-extrabold mb-6 leading-tight tracking-tight text-white break-words">
-                <span class="en">Turn Every QR Scan Into a <br class="hidden md:block"/> <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-500">Verified Lead.</span></span>
-                <span class="ru">Превратите каждое сканирование QR в <br class="hidden md:block"/> <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-500">проверенный лид.</span></span>
-                <span class="ro">Transformă fiecare scanare QR într-un <br class="hidden md:block"/> <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-500">lead verificat.</span></span>
-            </h1>
-
-            <!-- Subheadline -->
-            <p class="text-base sm:text-lg md:text-xl text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed px-2">
-                <span class="en">The ultimate offline-to-online funnel. We securely capture and verify phone numbers via SMS before redirecting users to your destination link.</span>
-                <span class="ru">Идеальная воронка из офлайна в онлайн. Мы безопасно собираем и проверяем номера телефонов через SMS перед редиректом на вашу ссылку.</span>
-                <span class="ro">Pâlnia perfectă offline-online. Colectăm și verificăm securizat numerele de telefon prin SMS înainte de redirecționarea către link-ul tău.</span>
-            </p>
-
-            <!-- Contact Buttons -->
-            <div class="flex flex-col sm:flex-row justify-center items-center gap-4 mt-8">
-                <!-- Email Button -->
-                <a href="mailto:galacheck2@gmail.com" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold shadow-lg shadow-indigo-500/25 transition-all focus:ring-2 focus:ring-indigo-500 focus:outline-none flex items-center justify-center gap-3">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                    <span class="en">Email Us</span>
-                    <span class="ru">Написать на Email</span>
-                    <span class="ro">Trimite Email</span>
-                </a>
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-inner">
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <span style="display:inline-block; width:8px; height:8px; background:var(--secondary); border-radius:50%;"></span>
+                        <span class="en">Smart QR Lead Capture Platform</span>
+                        <span class="ru">Платформа умного захвата QR-лидов</span>
+                        <span class="ro">Platformă inteligentă pentru captarea lead-urilor prin QR</span>
+                    </div>
+                    <h1>
+                        <span class="en">Turn Every QR Scan Into a Verified Lead.</span>
+                        <span class="ru">Превратите каждое сканирование QR-кода в верифицированный лид.</span>
+                        <span class="ro">Transformă fiecare scanare QR într-un lead verificat.</span>
+                    </h1>
+                    <p>
+                        <span class="en">Transform ordinary links into trackable marketing funnels. Capture verified phone numbers via secure SMS confirmation before redirecting visitors to your destination.</span>
+                        <span class="ru">Превращайте обычные ссылки в отслеживаемые маркетинговые воронки. Собирайте подтвержденные номера телефонов через безопасную SMS-верификацию перед перенаправлением пользователей на ваш сайт.</span>
+                        <span class="ro">Transformă link-urile obișnuite în pâlnii de marketing urmăribile. Colectează numere de telefon verificate prin confirmare securizată prin SMS înainte de a redirecționa vizitatorii către destinația ta.</span>
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="#pricing" class="btn btn-primary">
+                            <span class="en">Start Capturing Leads</span>
+                            <span class="ru">Начать сбор лидов</span>
+                            <span class="ro">Începe să colectezi lead-uri</span>
+                        </a>
+                        <a href="#how-it-works" class="btn btn-secondary">
+                            <span class="en">See How It Works</span>
+                            <span class="ru">Как это работает</span>
+                            <span class="ro">Vezi cum funcționează</span>
+                        </a>
+                    </div>
+                </div>
                 
-                <!-- WhatsApp Button -->
-                <a href="https://wa.me/37360258499" target="_blank" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-semibold shadow-lg transition-all focus:ring-2 focus:ring-slate-500 focus:outline-none flex items-center justify-center gap-3">
-                    <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-                    <span class="en">WhatsApp Sales</span>
-                    <span class="ru">WhatsApp Продажи</span>
-                    <span class="ro">WhatsApp Vânzări</span>
-                </a>
+                <div class="hero-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Mobile QR Verification" class="hero-img">
+                    <div class="floating-ui">
+                        <div class="icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </div>
+                        <div class="text">
+                            <strong>
+                                <span class="en">New Lead Captured</span><span class="ru">Получен новый лид</span><span class="ro">Lead nou captat</span>
+                            </strong>
+                            <span>
+                                <span class="en">+1 (555) Verified</span><span class="ru">+1 (555) Подтвержден</span><span class="ro">+1 (555) Verificat</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </main>
+    </section>
 
-    <!-- HOW IT WORKS (MINI SECTION) -->
-    <footer class="relative z-10 border-t border-slate-800/50 bg-slate-900/30 backdrop-blur-md mt-auto">
-        <div class="container mx-auto px-6 py-10">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center max-w-4xl mx-auto">
-                <!-- Step 1 -->
-                <div class="flex flex-col items-center">
-                    <div class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center text-slate-300 mb-4 border border-slate-700 flex-shrink-0">1</div>
-                    <h3 class="font-semibold text-white mb-2">
-                        <span class="en">User Scans QR</span><span class="ru">Скан QR-кода</span><span class="ro">Scanare QR</span>
-                    </h3>
-                    <p class="text-slate-500 text-sm">
-                        <span class="en">Customer scans your dynamic QR code from print, packaging, or display.</span>
-                        <span class="ru">Клиент сканирует ваш динамический QR-код с печатной продукции.</span>
-                        <span class="ro">Clientul scanează codul tău QR dinamic de pe materialele tipărite.</span>
-                    </p>
-                </div>
-                <!-- Step 2 -->
-                <div class="flex flex-col items-center">
-                    <div class="w-12 h-12 bg-indigo-500/20 rounded-full flex items-center justify-center text-indigo-400 mb-4 border border-indigo-500/30 shadow-[0_0_15px_rgba(99,102,241,0.2)] flex-shrink-0">2</div>
-                    <h3 class="font-semibold text-white mb-2">
-                        <span class="en">SMS Verification</span><span class="ru">Проверка по SMS</span><span class="ro">Verificare SMS</span>
-                    </h3>
-                    <p class="text-slate-500 text-sm">
-                        <span class="en">User enters phone number and validates it via a secure one-time PIN.</span>
-                        <span class="ru">Пользователь вводит номер и подтверждает его одноразовым PIN-кодом.</span>
-                        <span class="ro">Utilizatorul introduce numărul și îl validează printr-un PIN unic.</span>
-                    </p>
-                </div>
-                <!-- Step 3 -->
-                <div class="flex flex-col items-center">
-                    <div class="w-12 h-12 bg-emerald-500/20 rounded-full flex items-center justify-center text-emerald-400 mb-4 border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.2)] flex-shrink-0">3</div>
-                    <h3 class="font-semibold text-white mb-2">
-                        <span class="en">Smart Redirect</span><span class="ru">Умный редирект</span><span class="ro">Redirecționare</span>
-                    </h3>
-                    <p class="text-slate-500 text-sm">
-                        <span class="en">You capture a verified lead, and the user gets sent to your destination link.</span>
-                        <span class="ru">Вы получаете проверенный лид, а пользователь переходит по вашей ссылке.</span>
-                        <span class="ro">Tu obții un lead verificat, iar utilizatorul este trimis spre link-ul tău.</span>
-                    </p>
-                </div>
+    <!-- HOW IT WORKS -->
+    <section id="how-it-works" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>
+                    <span class="en">From Scan to Conversion.</span>
+                    <span class="ru">От сканирования до конверсии.</span>
+                    <span class="ro">De la Scanare la Conversie.</span>
+                </h2>
+                <p>
+                    <span class="en">CallCature bridges the gap between offline QR marketing and verified digital lead acquisition in three seamless steps.</span>
+                    <span class="ru">CallCature устраняет разрыв между офлайн QR-маркетингом и получением верифицированных цифровых лидов за три простых шага.</span>
+                    <span class="ro">CallCature elimină decalajul dintre marketingul QR offline și achiziția digitală de lead-uri verificate în trei pași simpli.</span>
+                </p>
             </div>
             
-            <div class="text-center mt-12 text-sm text-slate-600">
-                &copy; <script>document.write(new Date().getFullYear())</script> CallCapture. <span class="en">All rights reserved.</span><span class="ru">Все права защищены.</span><span class="ro">Toate drepturile rezervate.</span>
+            <div class="workflow-grid">
+                <div class="workflow-step">
+                    <div class="step-number">1</div>
+                    <h3>
+                        <span class="en">User Scans QR</span><span class="ru">Пользователь сканирует QR</span><span class="ro">Utilizatorul scanează QR-ul</span>
+                    </h3>
+                    <p>
+                        <span class="en">Customer scans your dynamic QR code from your print ad, menu, packaging, or event display.</span>
+                        <span class="ru">Клиент сканирует ваш динамический QR-код с печатной рекламы, меню, упаковки или стенда.</span>
+                        <span class="ro">Clientul scanează codul tău QR dinamic de pe reclama tipărită, meniu, ambalaj sau afișaj de la eveniment.</span>
+                    </p>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">2</div>
+                    <h3>
+                        <span class="en">SMS Verification</span><span class="ru">SMS-верификация</span><span class="ro">Verificare prin SMS</span>
+                    </h3>
+                    <p>
+                        <span class="en">Before accessing the link, the visitor enters their phone number and verifies it via a one-time SMS PIN.</span>
+                        <span class="ru">Перед переходом по ссылке посетитель вводит свой номер телефона и мгновенно подтверждает его одноразовым SMS-кодом.</span>
+                        <span class="ro">Înainte de a accesa link-ul, vizitatorul își introduce numărul de telefon și îl verifică printr-un PIN unic primit prin SMS.</span>
+                    </p>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">3</div>
+                    <h3>
+                        <span class="en">Smart Redirect</span><span class="ru">Умный редирект</span><span class="ro">Redirecționare inteligentă</span>
+                    </h3>
+                    <p>
+                        <span class="en">Upon verification, the user is automatically sent to your target URL, and you capture a 100% validated lead.</span>
+                        <span class="ru">После успешной верификации пользователь автоматически перенаправляется на ваш целевой URL, а вы получаете 100% подтвержденный лид.</span>
+                        <span class="ro">După verificare, utilizatorul este trimis automat către adresa URL vizată, iar tu obții un lead 100% validat.</span>
+                    </p>
+                </div>
             </div>
+        </div>
+    </section>
+
+    <!-- PLATFORM DASHBOARD & FEATURES SECTION -->
+    <section id="features" class="section bg-light">
+        <div class="container">
+            <div class="section-header">
+                <h2>
+                    <span class="en">Track. Verify. Convert.</span>
+                    <span class="ru">Отслеживайте. Проверяйте. Конвертируйте.</span>
+                    <span class="ro">Urmărește. Verifică. Convertește.</span>
+                </h2>
+                <p>
+                    <span class="en">A centralized platform built for advertisers, agencies, and businesses that demand measurable ROI from their QR campaigns.</span>
+                    <span class="ru">Централизованная платформа, созданная для рекламодателей, агентств и бизнеса, которым нужен измеримый ROI от QR-кампаний.</span>
+                    <span class="ro">O platformă centralizată construită pentru agenții de publicitate, agenții și companii care necesită un ROI măsurabil din campaniile lor QR.</span>
+                </p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><rect x="7" y="7" width="3" height="3"></rect><rect x="14" y="7" width="3" height="3"></rect><rect x="7" y="14" width="3" height="3"></rect><rect x="14" y="14" width="3" height="3"></rect></svg>
+                    </div>
+                    <h3>
+                        <span class="en">Dynamic QR Generation</span><span class="ru">Динамическая генерация QR</span><span class="ro">Generare de QR-uri Dinamice</span>
+                    </h3>
+                    <p>
+                        <span class="en">Create unlimited custom QR codes. Update destination links anytime without reprinting your marketing materials.</span>
+                        <span class="ru">Создавайте неограниченное количество настраиваемых QR-кодов. Обновляйте целевые ссылки в любое время без перепечатки материалов.</span>
+                        <span class="ro">Creează coduri QR personalizate nelimitate. Actualizează link-urile de destinație oricând, fără a retipări materialele de marketing.</span>
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                    </div>
+                    <h3>
+                        <span class="en">Verified Lead Collection</span><span class="ru">Сбор верифицированных лидов</span><span class="ro">Colectare de Lead-uri Verificate</span>
+                    </h3>
+                    <p>
+                        <span class="en">Stop collecting fake data. Our secure SMS gateway ensures you capture only validated, reachable phone numbers.</span>
+                        <span class="ru">Хватит собирать фейковые данные. Наш безопасный SMS-шлюз гарантирует получение только реальных, доступных номеров телефонов.</span>
+                        <span class="ro">Nu mai colecta date false. Gateway-ul nostru securizat prin SMS se asigură că obții doar numere de telefon validate și reale.</span>
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                    </div>
+                    <h3>
+                        <span class="en">Real-Time Analytics</span><span class="ru">Аналитика в реальном времени</span><span class="ro">Analitice în Timp Real</span>
+                    </h3>
+                    <p>
+                        <span class="en">Track QR scans, verified leads, click timestamps, and conversion activity directly from your secure dashboard.</span>
+                        <span class="ru">Отслеживайте сканирования, подтвержденные лиды, время кликов и конверсии прямо в защищенной панели управления.</span>
+                        <span class="ro">Urmărește scanările QR, lead-urile verificate, orele clicurilor și activitatea de conversie direct din panoul tău de control securizat.</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="dashboard-preview">
+                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="CallCature Analytics Dashboard Preview">
+            </div>
+        </div>
+    </section>
+
+    <!-- SPLIT USE CASES SECTION -->
+    <section id="use-cases" class="section">
+        <div class="container">
+            <div class="use-case-inner">
+                <div>
+                    <h2>
+                        <span class="en">Perfect for Every Industry</span>
+                        <span class="ru">Идеально для любой отрасли</span>
+                        <span class="ro">Perfect pentru orice industrie</span>
+                    </h2>
+                    <p style="margin-top: 16px; font-size: 1.125rem; color: var(--text-body);">
+                        <span class="en">Turn offline customer curiosity into a high-value, online CRM database. Ideal for agencies, local businesses, and marketers looking to optimize offline-to-online customer tracking.</span>
+                        <span class="ru">Превратите любопытство офлайн-клиентов в ценную онлайн-базу для CRM. Идеально подходит для агентств и бизнеса, стремящихся оптимизировать отслеживание клиентов.</span>
+                        <span class="ro">Transformă curiozitatea clienților offline într-o bază de date CRM online de mare valoare. Ideal pentru agenții, afaceri locale și marketeri care doresc să optimizeze urmărirea clienților.</span>
+                    </p>
+                    
+                    <div class="use-cases-tags">
+                        <span class="use-case-tag"><span class="en">Print Advertising</span><span class="ru">Печатная реклама</span><span class="ro">Publicitate tipărită</span></span>
+                        <span class="use-case-tag"><span class="en">Real Estate Promotions</span><span class="ru">Недвижимость</span><span class="ro">Promovări imobiliare</span></span>
+                        <span class="use-case-tag"><span class="en">Restaurant Menus</span><span class="ru">Меню ресторанов</span><span class="ro">Meniuri de restaurante</span></span>
+                        <span class="use-case-tag"><span class="en">Event Registrations</span><span class="ru">Регистрация на мероприятия</span><span class="ro">Înregistrări evenimente</span></span>
+                        <span class="use-case-tag"><span class="en">Product Packaging</span><span class="ru">Упаковка товаров</span><span class="ro">Ambalaje de produse</span></span>
+                        <span class="use-case-tag"><span class="en">SMS Marketing Acquisition</span><span class="ru">Сбор баз для SMS-маркетинга</span><span class="ro">Achiziție pentru SMS Marketing</span></span>
+                    </div>
+                </div>
+                <div>
+                    <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Retail Store using QR Codes" class="use-case-img">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRICING & SIGNUP SECTION -->
+    <section id="pricing" class="section bg-light">
+        <div class="container">
+            <div class="section-header">
+                <h2>
+                    <span class="en">Simple, Transparent Pricing</span>
+                    <span class="ru">Простые и прозрачные цены</span>
+                    <span class="ro">Prețuri Simple, Transparente</span>
+                </h2>
+                <p>
+                    <span class="en">Everything you need to capture verified leads in one powerful platform.</span>
+                    <span class="ru">Все необходимое для сбора верифицированных лидов на одной мощной платформе.</span>
+                    <span class="ro">Tot ce ai nevoie pentru a capta lead-uri verificate într-o singură platformă puternică.</span>
+                </p>
+            </div>
+
+            <div class="pricing-signup-wrapper">
+                
+                <!-- Pricing Card -->
+                <div class="pricing-card">
+                    <h3>
+                        <span class="en">One Simple Plan</span>
+                        <span class="ru">Один простой тариф</span>
+                        <span class="ro">Un Singur Abonament Simplu</span>
+                    </h3>
+                    <div class="price">€49<span> / <span class="en">mo</span><span class="ru">мес</span><span class="ro">lună</span></span></div>
+                    <div class="tagline">
+                        <span class="en">Turn every QR scan into a verified customer.</span>
+                        <span class="ru">Превратите каждое сканирование QR в верифицированного клиента.</span>
+                        <span class="ro">Transformă fiecare scanare QR într-un client verificat.</span>
+                    </div>
+
+                    <ul class="feature-list">
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <span class="en">Unlimited QR Codes</span><span class="ru">Неограниченно QR-кодов</span><span class="ro">Coduri QR nelimitate</span>
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <span class="en">Unlimited Campaigns</span><span class="ru">Неограниченно кампаний</span><span class="ro">Campanii nelimitate</span>
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <span class="en">Verified Phone Leads</span><span class="ru">Верифицированные лиды</span><span class="ro">Lead-uri telefonice verificate</span>
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <span class="en">SMS PIN Verification</span><span class="ru">SMS PIN-верификация</span><span class="ro">Verificare PIN prin SMS</span>
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <span class="en">Real-Time Analytics</span><span class="ru">Аналитика в реальном времени</span><span class="ro">Analitice în timp real</span>
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <span class="en">Dynamic Redirects</span><span class="ru">Динамические редиректы</span><span class="ro">Redirecționări dinamice</span>
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <span class="en">Multi-Language Dashboard</span><span class="ru">Мультиязычная панель</span><span class="ro">Panou de control multilingv</span>
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <span class="en">Lead Management Tools</span><span class="ru">Инструменты управления лидами</span><span class="ro">Instrumente de gestionare a lead-urilor</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Signup Form & PayPal Integration Container -->
+                <div class="signup-form-card">
+                    
+                    <!-- STEP 1: The User Form -->
+                    <div id="subscription-form">
+                        <h3>
+                            <span class="en">Start Your Subscription</span>
+                            <span class="ru">Оформить подписку</span>
+                            <span class="ro">Începe Abonamentul</span>
+                        </h3>
+                        <p>
+                            <span class="en">Enter your details to proceed to secure payment.</span>
+                            <span class="ru">Введите данные для перехода к безопасной оплате.</span>
+                            <span class="ro">Introdu datele pentru a trece la plata securizată.</span>
+                        </p>
+
+                        <form onsubmit="proceedToPayment(event)">
+                            <div class="form-group">
+                                <label><span class="en">Full Name</span><span class="ru">Полное имя</span><span class="ro">Nume complet</span></label>
+                                <input type="text" id="cust-name" class="form-control" required placeholder="John Doe">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label><span class="en">Work Email</span><span class="ru">Рабочий Email</span><span class="ro">Email de serviciu</span></label>
+                                <input type="email" id="cust-email" class="form-control" required placeholder="john@company.com">
+                            </div>
+
+                            <div class="form-group">
+                                <label><span class="en">Company Name</span><span class="ru">Название компании</span><span class="ro">Numele companiei</span></label>
+                                <input type="text" class="form-control" required placeholder="Acme Corp">
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-full" style="margin-top: 10px;">
+                                <span class="en">Proceed to Payment - €49/mo</span>
+                                <span class="ru">Перейти к оплате - €49/мес</span>
+                                <span class="ro">Mergi la Plată - €49/lună</span>
+                            </button>
+                        </form>
+                        
+                        <p style="text-align: center; font-size: 0.85rem; margin-top: 16px; margin-bottom: 0;">
+                            <svg viewBox="0 0 24 24" style="width:14px; height:14px; display:inline; vertical-align:middle; color:var(--secondary);" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                            <span class="en">Secure 256-bit SSL encryption.</span>
+                            <span class="ru">Защищено 256-битным SSL-шифрованием.</span>
+                            <span class="ro">Securizat cu criptare SSL pe 256 de biți.</span>
+                        </p>
+                    </div>
+
+                    <!-- STEP 2: The PayPal Buttons -->
+                    <div id="paypal-button-container">
+                        <h3 style="margin-bottom: 16px; text-align: center;">
+                            <span class="en">Complete Payment</span>
+                            <span class="ru">Завершить оплате</span>
+                            <span class="ro">Finalizează plata</span>
+                        </h3>
+                        <!-- PayPal UI will render inside this div automatically via JS below -->
+                    </div>
+
+                    <!-- STEP 3: Success Message -->
+                    <div id="subscription-success" class="form-success">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        <h3>
+                            <span class="en">Welcome Aboard!</span>
+                            <span class="ru">Добро пожаловать!</span>
+                            <span class="ro">Bun venit la bord!</span>
+                        </h3>
+                        <p>
+                            <span class="en">Your subscription was successful. Please check your email to access your dashboard.</span>
+                            <span class="ru">Подписка успешно оформлена. Пожалуйста, проверьте почту для доступа к панели.</span>
+                            <span class="ro">Abonamentul dvs. a fost realizat cu succes. Vă rugăm să vă verificați emailul.</span>
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DARK CTA / CONTACT SECTION -->
+    <section id="contact" style="padding-top: 40px;">
+        <div class="container">
+            <div class="cta-section">
+                <h2>
+                    <span class="en">Have questions? We're here to help.</span>
+                    <span class="ru">Есть вопросы? Мы готовы помочь.</span>
+                    <span class="ro">Ai întrebări? Suntem aici să te ajutăm.</span>
+                </h2>
+                <p>
+                    <span class="en">Contact our sales team or book a live demo to see how CallCature can optimize your marketing funnels.</span>
+                    <span class="ru">Свяжитесь с нашим отделом продаж или закажите демо, чтобы узнать, как CallCature может оптимизировать ваши воронки.</span>
+                    <span class="ro">Contactează echipa noastră de vânzări sau programează un demo pentru a vedea cum CallCature îți poate optimiza campaniile.</span>
+                </p>
+
+                <div class="contact-methods">
+                    <!-- Email Support -->
+                    <div class="contact-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                        <a href="mailto:galacheck2@gmail.com">
+                            <span class="en">Email: galacheck2@gmail.com</span>
+                            <span class="ru">Email: galacheck2@gmail.com</span>
+                            <span class="ro">Email: galacheck2@gmail.com</span>
+                        </a>
+                    </div>
+                    
+                    <!-- WhatsApp Support -->
+                    <div class="contact-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                        <a href="https://wa.me/37360258499" target="_blank">
+                            <span class="en">WhatsApp: +373 60 258 499</span>
+                            <span class="ru">WhatsApp: +373 60 258 499</span>
+                            <span class="ro">WhatsApp: +373 60 258 499</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <h3 style="color: var(--text-dark); margin-bottom: 8px; font-weight: 800; font-size: 1.25rem;">CallCature</h3>
+            <p style="margin-bottom: 16px;">
+                <span class="en">Smart QR Redirects With Real Customer Verification.</span>
+                <span class="ru">Умные QR-редиректы с реальной верификацией клиентов.</span>
+                <span class="ro">Redirecționări QR inteligente cu verificarea reală a clienților.</span>
+            </p>
+            <p>
+                <span class="en">&copy; <script>document.write(new Date().getFullYear())</script> CallCature Platform. All Rights Reserved.</span>
+                <span class="ru">&copy; <script>document.write(new Date().getFullYear())</script> Платформа CallCature. Все права защищены.</span>
+                <span class="ro">&copy; <script>document.write(new Date().getFullYear())</script> Platforma CallCature. Toate drepturile rezervate.</span>
+            </p>
         </div>
     </footer>
 
-    <!-- SCRIPTS -->
+    <!-- INTERACTIVITY SCRIPTS -->
     <script>
-        // Set Language Logic
+        // Language Switcher Logic
         function setLanguage(lang) {
             document.documentElement.lang = lang;
-            
-            // Update Active Button
-            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            var buttons = document.getElementsByClassName('lang-btn');
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove('active');
+            }
             document.getElementById('btn-' + lang).classList.add('active');
         }
+
+        // STEP 1: Form Validation -> Show PayPal Button
+        function proceedToPayment(event) {
+            event.preventDefault(); // Stop page from reloading
+            
+            // Hide the user form
+            document.getElementById('subscription-form').style.display = 'none';
+            // Reveal the PayPal buttons
+            document.getElementById('paypal-button-container').style.display = 'block';
+        }
+
+        // STEP 2 & 3: Render PayPal Smart Buttons
+        paypal.Buttons({
+            // Setup the transaction
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '49.00' // Transaction amount
+                        },
+                        description: "CallCature Subscription (+37360258499)"
+                    }]
+                });
+            },
+            // Finalize the transaction
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) {
+                    // Transaction successful -> Show Success Message UI
+                    document.getElementById('paypal-button-container').style.display = 'none';
+                    document.getElementById('subscription-success').style.display = 'block';
+                    
+                    // Optional: console.log(details) to see transaction data
+                    // console.log('Transaction completed by ' + details.payer.name.given_name);
+                });
+            }
+        }).render('#paypal-button-container'); 
+        // This renders the buttons inside the hidden div.
     </script>
 </body>
 </html>
