@@ -33,7 +33,7 @@ FROM base AS build
 
 # Install packages needed to build gems and node modules
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential git libpq-dev libvips libyaml-dev node-gyp pkg-config python-is-python3 certbot && \
+    apt-get install --no-install-recommends -y build-essential git libpq-dev libvips libyaml-dev node-gyp pkg-config python-is-python3 && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Install JavaScript dependencies
@@ -58,29 +58,6 @@ RUN bundle install && \
 COPY package.json yarn.lock ./
 RUN yarn install --immutable
 
-ENV RAILS_ENV=production
-ENV RACK_ENV=production
-ENV RAILS_LOG_TO_STDOUT=enabled
-ENV RAILS_SERVE_STATIC_FILES=enabled
-ENV WEB_CONCURRENCY=0
-ENV RAILS_MAX_THREADS=20
-
-# ARG RAILS_MASTER_KEY
-# ARG SECRET_KEY_BASE
-# ARG POSTGRES_PASSWORD
-# ARG KAMAL_REGISTRY_PASSWORD
-
-# # Optional: set them as ENV for runtime inside the container
-# ENV RAILS_MASTER_KEY=$RAILS_MASTER_KEY
-# ENV SECRET_KEY_BASE=$SECRET_KEY_BASE
-# ENV POSTGRES_PASSWORD=$POSTGRES_PASSWORD
-# ENV KAMAL_REGISTRY_PASSWORD=$KAMAL_REGISTRY_PASSWORD
-
-ENV POSTGRES_USER=postgres
-ENV POSTGRES_DB=postgres
-ENV POSTGRES_HOST=postgres
-ENV POSTGRES_DB=callcapture_development
-ENV JAVA_OPTS="-Xms512m -Xmx1g -XX:+UseG1GC -XX:MaxGCPauseMillis=200"
 # Copy application code
 COPY . .
 # Precompile bootsnap code for faster boot times.
@@ -102,13 +79,14 @@ COPY nginx.conf /etc/nginx/sites-enabled/default
 # Run and own only the runtime files as a non-root user for security
 RUN groupadd --system --gid 1000 rails && \
     useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash
-# USER 1000:1000
 
 # Copy built artifacts: gems, application
 COPY --chown=rails:rails --from=build "${BUNDLE_PATH}" "${BUNDLE_PATH}"
 COPY --chown=rails:rails --from=build /rails /rails
 
 RUN chmod +x /rails/start.sh
+
+USER 1000:1000
 
 # Entrypoint prepares the database.
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
