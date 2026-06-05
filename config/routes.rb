@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   get "home/coming_soon"
   get "dev"  => "home#index"
   get "dev/admin" => "home#admin"
-  root "home#coming_soon"  
+  root "home#index"  
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
