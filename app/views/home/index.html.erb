@@ -1428,6 +1428,23 @@
             const [submitting, setSubmitting] = useState(false);
             const [notificationChannel, setNotificationChannel] = useState("telegram");
 
+            const [selectedScenario, setSelectedScenario] = useState("qr_estate_04");
+
+            const scenarios = {
+                "qr_estate_04": {
+                    name: "Yard Sign #4 (Luxury Villa)",
+                    target: "https://callcapture.com/targets/villa-tour-3d"
+                },
+                "qr_menu_table12": {
+                    name: "Restaurant Table #12 Menu",
+                    target: "https://callcapture.com/targets/special-spring-menu.pdf"
+                },
+                "qr_wifi_general": {
+                    name: "Free Guest Wi-Fi Portal",
+                    target: "https://callcapture.com/targets/guest-wifi-instructions"
+                }
+            };
+
             const t = TRANSLATIONS[lang];
 
             const resetSimulator = () => {
@@ -1948,7 +1965,7 @@
                                                                 <span className="text-[10px] font-bold text-sky-300 font-mono block mb-1">CallCapture Bot [LIVE]</span>
                                                                 <div className="text-[10px] font-mono text-slate-300 bg-slate-950 p-2.5 rounded border border-sky-500/10">
                                                                     <div className="text-sky-400 font-bold mb-1">{t.new_lead_captured}</div>
-                                                                    <div>👤 QR NODE: RealEstate Sign #4</div>
+                                                                    <div>👤 QR NODE: {scenarios[selectedScenario]?.name || "RealEstate Sign #4"}</div>
                                                                     <div>📞 PHONE: <span className="text-yellow-405 font-bold">{phone}</span></div>
                                                                     <div>✅ CODE: {pinCode} (Matched)</div>
                                                                 </div>
@@ -1961,8 +1978,9 @@
                                                                 <span className="text-[10px] font-bold text-rose-300 font-mono block mb-1">To: admin@brand.com</span>
                                                                 <div className="text-[10px] text-slate-300 bg-slate-950 p-2.5 rounded border border-rose-500/15">
                                                                     <div className="font-bold border-b border-rose-500/10 pb-1 mb-1 text-rose-300">New verified lead captured</div>
+                                                                    <div>Source Unit: <span className="text-white font-bold">{scenarios[selectedScenario]?.name || "RealEstate Sign #4"}</span></div>
                                                                     <div>Visitor Number: <span className="text-white font-bold">{phone}</span></div>
-                                                                    <div>Target URL: Special-Discount-Unlocked</div>
+                                                                    <div>Target URL: <span className="text-indigo-400 select-all font-mono text-[9px] break-all">{scenarios[selectedScenario]?.target}</span></div>
                                                                 </div>
                                                             </div>
                                                         )}
@@ -1974,8 +1992,9 @@
                                                                 <div className="p-2.5 bg-slate-950 rounded border border-emerald-500/15 font-mono text-[9px] text-emerald-300">
                                                                     {"{"}<br />
                                                                     &nbsp;&nbsp;"event": "lead.verified",<br />
-                                                                    &nbsp;&nbsp;"phone_hashed": "df92cde882b",<br />
+                                                                    &nbsp;&nbsp;"source_name": "{scenarios[selectedScenario]?.name || "RealEstate Sign #4"}",<br />
                                                                     &nbsp;&nbsp;"phone_raw": "{phone}",<br />
+                                                                    &nbsp;&nbsp;"target_unlocked": "{scenarios[selectedScenario]?.target}",<br />
                                                                     &nbsp;&nbsp;"timestamp": {Date.now()}<br />
                                                                     {"}"}
                                                                 </div>
@@ -1997,6 +2016,252 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </section>
+
+                    {/* HERO INSTANT FLOW SYSTEM OVERVIEW DIAGRAM */}
+                    <div 
+                        className="w-full max-w-4xl mx-auto mb-20 relative rounded-xl border border-white/10 bg-slate-900/40 backdrop-blur-md p-6 sm:p-8 shadow-[0_0_50px_rgba(99,102,241,0.08)] text-left"
+                    >
+                        <div className="absolute top-3 left-3 bg-indigo-500/15 text-[8px] font-mono tracking-widest text-indigo-400 py-1 px-2.5 rounded border border-indigo-500/20 font-bold uppercase select-none z-10">
+                            PLATFORM INFRASTRUCTURE // VISUAL FLOW
+                        </div>
+
+                        <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch relative">
+                            {/* Light beam line connecting elements on desktop */}
+                            <div className="hidden md:block absolute top-[40px] left-[15%] right-[15%] h-[1px] bg-gradient-to-r from-indigo-500 via-purple-500 to-emerald-500 -z-10 opacity-30"></div>
+
+                            {/* Node 1: Dynamic Scan */}
+                            <div className="bg-slate-950/90 border border-white/10 p-5 rounded-lg flex flex-col justify-between text-left space-y-4 shadow-lg relative group transition-all duration-300 hover:border-indigo-550/30">
+                                <div className="space-y-3">
+                                    <div className="w-10 h-10 rounded-lg bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-indigo-400">
+                                        <QrCodeIcon className="w-5 h-5" />
+                                    </div>
+                                    <div>
+                                        <h4 className="text-sm font-bold text-white font-sans">1. Scan & Detect</h4>
+                                        <p className="text-[11px] text-slate-400 font-sans leading-relaxed mt-1">
+                                            Prospect scans a dynamically generated CallCapture QR code on signs, coasters, or product tags.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="bg-slate-900/80 p-2.5 rounded border border-white/5 flex items-center justify-between text-[10px] font-mono text-indigo-300">
+                                    <span>SCANNER PORT</span>
+                                    <span className="text-emerald-400 font-bold animate-pulse">● DETECTED</span>
+                                </div>
+                            </div>
+
+                            {/* Node 2: SMS Verification SMS-OTP Gate */}
+                            <div className="bg-slate-950/90 border border-purple-500/30 p-5 rounded-lg flex flex-col justify-between text-left space-y-4 shadow-[0_0_20px_rgba(168,85,247,0.06)] relative group transition-all duration-300 hover:border-purple-500/50">
+                                <div className="space-y-3">
+                                    <div className="w-10 h-10 rounded-lg bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 relative">
+                                        <SmartphoneIcon className="w-5 h-5 animate-pulse" />
+                                        <span className="absolute top-0.5 right-0.5 w-2 h-2 rounded-full bg-indigo-400 animate-ping"></span>
+                                    </div>
+                                    <div>
+                                        <h4 className="text-sm font-bold text-white font-sans">2. Secure Handshake</h4>
+                                        <p className="text-[11px] text-slate-400 font-sans leading-relaxed mt-1">
+                                            The system requests a rapid dynamic OTP passcode. Ensures the captured lead is a legitimate active cell handset.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="bg-slate-900/80 p-2.5 rounded border border-white/5 space-y-1.5">
+                                    <div className="flex justify-between text-[9px] font-mono text-purple-300">
+                                        <span>CELL VALIDATION</span>
+                                        <span className="text-yellow-405 font-bold">OTP PENDING</span>
+                                    </div>
+                                    <div className="h-1.5 w-full bg-slate-950 rounded-full overflow-hidden">
+                                        <div className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full w-2/3 animate-pulse"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Node 3: Database & Redirection */}
+                            <div className="bg-slate-950/90 border border-white/10 p-5 rounded-lg flex flex-col justify-between text-left space-y-4 shadow-lg relative group transition-all duration-300 hover:border-emerald-500/30">
+                                <div className="space-y-3">
+                                    <div className="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+                                        <DatabaseIcon className="w-5 h-5" />
+                                    </div>
+                                    <div>
+                                        <h4 className="text-sm font-bold text-white font-sans">3. CRM Sync & Route</h4>
+                                        <p className="text-[11px] text-slate-400 font-sans leading-relaxed mt-1">
+                                            The verified mobile phone record logs securely to the CRM dashboard. User instantly redirects to protected content.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="bg-slate-900/80 p-2.5 rounded border border-white/5 flex items-center justify-between text-[10px] font-mono text-emerald-300">
+                                    <span>LEAD LOGGED</span>
+                                    <span className="text-emerald-450 font-bold">100% SUCCESS</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Interactive flow details footer block */}
+                        <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-lg bg-indigo-500/5 border border-indigo-500/10">
+                            <div className="flex items-center gap-3 text-left">
+                                <span className="p-1 px-2 py-0.5 rounded bg-indigo-500/15 text-indigo-300 font-mono text-[9px] font-bold border border-indigo-550/20 shrink-0">AUTOMATED ENCRYPT</span>
+                                <p className="text-slate-300 text-xs font-sans leading-snug">Every dynamic route uses standard carrier checks to verify mobile users before they gain access to files.</p>
+                            </div>
+                            <button 
+                                onClick={() => {
+                                    const element = document.getElementById("live-demo");
+                                    if (element) {
+                                        element.scrollIntoView({ behavior: "smooth", block: "center" });
+                                    }
+                                }}
+                                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 hover:text-white border border-indigo-400/20 text-white text-xs font-sans font-bold uppercase tracking-wider rounded transition-all cursor-pointer shadow-lg shrink-0 active:scale-95"
+                            >
+                                Test Live Simulator
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* TARGET INDUSTRY SCENARIOS WITH PHOTOREALISTIC DESIGN MOCKUPS */}
+                    <section className="border-t border-b border-white/10 bg-slate-950/80 backdrop-blur-md relative z-10 w-full py-20 sm:py-28" id="scenarios">
+                        <div className="max-w-7xl mx-auto px-6 sm:px-12 text-center">
+                          
+                          <div className="max-w-2xl mx-auto mb-16 text-center">
+                            <span className="text-xs font-mono font-bold uppercase tracking-[0.25em] text-indigo-400 block mb-3">
+                              PRODUCTION SECTORS // INTEGRATION SCENARIOS
+                            </span>
+                            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight leading-tight font-sans">
+                              Deploy CallCapture Across Your Channels
+                            </h2>
+                            <p className="text-slate-400 text-sm leading-relaxed mt-4 font-sans">
+                              Connect high-intent offline buyers and guests to digital portals whilst immediately validating their cell contact details with state-of-the-art SMS OTP verification.
+                            </p>
+                          </div>
+
+                          {/* Grid of Industry Cards */}
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            
+                            {/* Card 1: Luxury Real Estate */}
+                            <div className="bg-slate-900/40 border border-white/5 rounded-xl overflow-hidden flex flex-col group hover:border-indigo-500/30 transition-all duration-300 animate-fade-in">
+                              <div className="aspect-video relative overflow-hidden bg-slate-950">
+                                <img 
+                                  src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=800&q=80" 
+                                  alt="Luxury Villa Modern Lawn Sign QR Code" 
+                                  referrerPolicy="no-referrer"
+                                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                />
+                                <div className="absolute top-2.5 left-2.5 bg-slate-950/80 text-[8.5px] font-mono tracking-widest text-indigo-300 py-1 px-2 rounded-sm border border-white/5 font-bold uppercase">
+                                  Real Estate Yard Sign
+                                </div>
+                              </div>
+                              <div className="p-6 flex-grow flex flex-col justify-between text-left space-y-4">
+                                <div className="space-y-4">
+                                  <h3 className="text-white font-bold text-lg font-sans">Luxury Residential Listings</h3>
+                                  <p className="text-slate-400 text-xs leading-relaxed font-sans">
+                                    Place custom QR boards on real estate signs. Homebuyers scan, authenticate via SMS passcode, and unlock instant access to high-resolution 3D VR tours and pricing sheets.
+                                  </p>
+                                </div>
+                                <div className="space-y-3 pt-2">
+                                  <div className="flex items-center gap-2 text-[10px] font-mono text-slate-500">
+                                    <span className="text-indigo-400">⚡ CAPTURE LINK:</span>
+                                    <span className="bg-slate-950 px-2 py-0.5 rounded border border-white/5 truncate max-w-[200px]">Yard Sign #4 (Luxury Villa)</span>
+                                  </div>
+                                  <button 
+                                    onClick={() => {
+                                      setSelectedScenario("qr_estate_04");
+                                      setDemoState("phone_entry");
+                                      const element = document.getElementById("live-demo");
+                                      if (element) {
+                                        element.scrollIntoView({ behavior: "smooth", block: "center" });
+                                      }
+                                    }}
+                                    className="w-full py-2.5 bg-indigo-600/10 hover:bg-indigo-600 hover:text-white border border-indigo-500/20 text-indigo-400 text-xs font-bold uppercase tracking-wider rounded transition-all cursor-pointer font-sans text-center"
+                                  >
+                                    Load & Test Scenario
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Card 2: Hospitality & Menus */}
+                            <div className="bg-slate-900/40 border border-white/5 rounded-xl overflow-hidden flex flex-col group hover:border-indigo-500/30 transition-all duration-300 animate-fade-in">
+                              <div className="aspect-video relative overflow-hidden bg-slate-950">
+                                <img 
+                                  src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80" 
+                                  alt="Dine-in restaurant QR menu tabletop stand" 
+                                  referrerPolicy="no-referrer"
+                                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                />
+                                <div className="absolute top-2.5 left-2.5 bg-slate-950/80 text-[8.5px] font-mono tracking-widest text-indigo-300 py-1 px-2 rounded-sm border border-white/5 font-bold uppercase">
+                                  Tabletop QR Menu
+                                </div>
+                              </div>
+                              <div className="p-6 flex-grow flex flex-col justify-between text-left space-y-4">
+                                <div className="space-y-4">
+                                  <h3 className="text-white font-bold text-lg font-sans">Premium Dining & Bars</h3>
+                                  <p className="text-slate-400 text-xs leading-relaxed font-sans">
+                                    Place secure tabletop menu cards. Diners scan, complete verification, and view active order sheets, helping you capture genuine visitor phone logs for automated local marketing.
+                                  </p>
+                                </div>
+                                <div className="space-y-3 pt-2">
+                                  <div className="flex items-center gap-2 text-[10px] font-mono text-slate-500">
+                                    <span className="text-indigo-400">⚡ CAPTURE LINK:</span>
+                                    <span className="bg-slate-950 px-2 py-0.5 rounded border border-white/5 truncate max-w-[200px]">Restaurant Table #12 Menu</span>
+                                  </div>
+                                  <button 
+                                    onClick={() => {
+                                      setSelectedScenario("qr_menu_table12");
+                                      setDemoState("phone_entry");
+                                      const element = document.getElementById("live-demo");
+                                      if (element) {
+                                        element.scrollIntoView({ behavior: "smooth", block: "center" });
+                                      }
+                                    }}
+                                    className="w-full py-2.5 bg-indigo-600/10 hover:bg-indigo-600 hover:text-white border border-indigo-500/20 text-indigo-400 text-xs font-bold uppercase tracking-wider rounded transition-all cursor-pointer font-sans text-center"
+                                  >
+                                    Load & Test Scenario
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Card 3: Free Guest Wi-Fi */}
+                            <div className="bg-slate-900/40 border border-white/5 rounded-xl overflow-hidden flex flex-col group hover:border-indigo-500/30 transition-all duration-300 animate-fade-in">
+                              <div className="aspect-video relative overflow-hidden bg-slate-950">
+                                <img 
+                                  src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80" 
+                                  alt="Guest Wi-Fi registration with verified QR scan" 
+                                  referrerPolicy="no-referrer"
+                                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                />
+                                <div className="absolute top-2.5 left-2.5 bg-slate-950/80 text-[8.5px] font-mono tracking-widest text-indigo-300 py-1 px-2 rounded-sm border border-white/5 font-bold uppercase">
+                                  Secure Wi-Fi Gateway
+                                </div>
+                              </div>
+                              <div className="p-6 flex-grow flex flex-col justify-between text-left space-y-4">
+                                <div className="space-y-4">
+                                  <h3 className="text-white font-bold text-lg font-sans">Gated Public Bandwidth</h3>
+                                  <p className="text-slate-400 text-xs leading-relaxed font-sans">
+                                    Deliver high-speed public local network access only to validated visitors. Eliminate burner phone profiles and proxy registrations with transparent, hardware-compliant SMS auth steps.
+                                  </p>
+                                </div>
+                                <div className="space-y-3 pt-2">
+                                  <div className="flex items-center gap-2 text-[10px] font-mono text-slate-500">
+                                    <span className="text-indigo-400">⚡ CAPTURE LINK:</span>
+                                    <span className="bg-slate-950 px-2 py-0.5 rounded border border-white/5 truncate max-w-[200px]">Free Guest Wi-Fi Portal</span>
+                                  </div>
+                                  <button 
+                                    onClick={() => {
+                                      setSelectedScenario("qr_wifi_general");
+                                      setDemoState("phone_entry");
+                                      const element = document.getElementById("live-demo");
+                                      if (element) {
+                                        element.scrollIntoView({ behavior: "smooth", block: "center" });
+                                      }
+                                    }}
+                                    className="w-full py-2.5 bg-indigo-600/10 hover:bg-indigo-600 hover:text-white border border-indigo-500/20 text-indigo-400 text-xs font-bold uppercase tracking-wider rounded transition-all cursor-pointer font-sans text-center"
+                                  >
+                                    Load & Test Scenario
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+
+                          </div>
+
                         </div>
                     </section>
 
