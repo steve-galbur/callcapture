@@ -1729,6 +1729,95 @@
                         </div>
                     </section>
 
+                    {/* PHYSICAL TO DIGITAL PIPELINE SHOWCASE EXPLAINER */}
+                    <div className="max-w-7xl mx-auto px-6 sm:px-12 pb-20 relative z-10" id="showcase-pipeline">
+                        <div className="p-1 sm:p-2 bg-gradient-to-b from-white/10 to-transparent rounded-2xl border border-white/10 shadow-2xl relative overflow-hidden bg-slate-950/40 backdrop-blur-md">
+                            <div className="bg-[#030712] rounded-xl p-6 sm:p-10 border border-white/5">
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                    
+                                    {/* Column 1: Scan Physical Code */}
+                                    <div className="space-y-4 group">
+                                        <div className="aspect-[4/3] rounded-lg overflow-hidden border border-white/5 relative bg-slate-950">
+                                            <img 
+                                                src="https://images.unsplash.com/photo-1552566626-52f8b828add9?auto=format&fit=crop&w=800&q=85" 
+                                                alt="Physical QR tablespace scanning" 
+                                                referrerPolicy="no-referrer"
+                                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"
+                                            />
+                                            <div className="absolute top-3 left-3 bg-indigo-600 border border-indigo-400/30 text-white font-mono text-[9px] uppercase tracking-wider font-bold py-1 px-2.5 rounded shadow-lg">
+                                                STAGE 1: PHYS SCAN
+                                            </div>
+                                            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                                                <p className="text-[10px] text-slate-300 font-mono">Tabletop stand placement on location</p>
+                                            </div>
+                                        </div>
+                                        <div className="text-left space-y-1.5">
+                                            <h4 className="text-white font-bold text-sm tracking-tight font-sans">
+                                                {lang === 'en' ? 'Scan Code on Table or Sign' : lang === 'ro' ? 'Scanează Codul pe Masă sau Panou' : 'Сканирование физического QR-кода'}
+                                            </h4>
+                                            <p className="text-slate-400 text-xs leading-relaxed font-sans">
+                                                {lang === 'en' ? 'User approaches point-of-sale or premium yard board and scans with their device camera in 0.4 seconds.' : lang === 'ro' ? 'Utilizatorul se apropie de masă sau de panoul imobiliar și scanează codul cu camera în doar 0,4 secunde.' : 'Пользователь приближается к точке продаж или стенду и сканирует код стандартной камерой за 0.4 секунды.'}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    {/* Column 2: SMS Authentication */}
+                                    <div className="space-y-4 group">
+                                        <div className="aspect-[4/3] rounded-lg overflow-hidden border border-white/5 relative bg-slate-950">
+                                            <img 
+                                                src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=800&q=85" 
+                                                alt="Smartphone verification prompt screen" 
+                                                referrerPolicy="no-referrer"
+                                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"
+                                            />
+                                            <div className="absolute top-3 left-3 bg-indigo-600 border border-indigo-400/30 text-white font-mono text-[9px] uppercase tracking-wider font-bold py-1 px-2.5 rounded shadow-lg">
+                                                STAGE 2: SMS SECURE
+                                            </div>
+                                            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                                                <p className="text-[10px] text-slate-300 font-mono">Immediate global carrier handshakes</p>
+                                            </div>
+                                        </div>
+                                        <div className="text-left space-y-1.5">
+                                            <h4 className="text-white font-bold text-sm tracking-tight font-sans">
+                                                {lang === 'en' ? 'Instant Cell Validation' : lang === 'ro' ? 'Validare Telefonică Instantanee' : 'Мгновенная валидация номера'}
+                                            </h4>
+                                            <p className="text-slate-400 text-xs leading-relaxed font-sans">
+                                                {lang === 'en' ? 'Every user receives a secure OTP. Only high-value validated contacts can pass through, ensuring 100% real leads.' : lang === 'ro' ? 'Fiecare vizitator primește un cod OTP prin sms securizat. Doar lead-urile testate și reale trec mai departe.' : 'Каждый гость получает безопасный OTP по СМС. Проходят только качественные проверенные контакты.'}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    {/* Column 3: Data Pipeline & Delivery */}
+                                    <div className="space-y-4 group">
+                                        <div className="aspect-[4/3] rounded-lg overflow-hidden border border-white/5 relative bg-slate-950">
+                                            <img 
+                                                src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=85" 
+                                                alt="Lead capture database tracking" 
+                                                referrerPolicy="no-referrer"
+                                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"
+                                            />
+                                            <div className="absolute top-3 left-3 bg-emerald-600 border border-emerald-400/30 text-white font-mono text-[9px] uppercase tracking-wider font-bold py-1 px-2.5 rounded shadow-lg animate-pulse">
+                                                STAGE 3: CRM DISPATCH
+                                            </div>
+                                            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                                                <p className="text-[10px] text-slate-300 font-mono">Webhooks sync straight to CRM logs</p>
+                                            </div>
+                                        </div>
+                                        <div className="text-left space-y-1.5">
+                                            <h4 className="text-white font-bold text-sm tracking-tight font-sans">
+                                                {lang === 'en' ? 'Direct CRM & Dashboard Sync' : lang === 'ro' ? 'Sincronizare Directă și Webhooks' : 'Синхронизация с CRM-системой'}
+                                            </h4>
+                                            <p className="text-slate-400 text-xs leading-relaxed font-sans">
+                                                {lang === 'en' ? 'Lead verification sends dynamic webhooks instantly to HubSpot, Salesforce, Zapier, or your admin panel.' : lang === 'ro' ? 'Datele verificate sunt trimise în timp real către HubSpot, Salesforce, Zapier sau direct în panoul de control.' : 'Верифицированные лиды передаются в реальном времени через вебхуки в HubSpot, Salesforce или Zapier.'}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     {/* How it works pipeline process section */}
                     <section className="relative z-10 border-t border-b border-white/10 bg-slate-950/40 backdrop-blur-sm w-full" id="how-it-works">
                         <div className="max-w-7xl mx-auto px-6 sm:px-12 py-16">
@@ -2262,6 +2351,145 @@
 
                           </div>
 
+                        </div>
+                    </section>
+
+                    {/* PHYSICAL TOUCHPOINTS GRID SHOWCASE */}
+                    <section className="relative z-10 w-full py-16 sm:py-24 border-b border-white/10 overflow-hidden bg-slate-950/20" id="showcase">
+                        <div className="max-w-7xl mx-auto px-6 sm:px-12">
+                            <div className="text-center mb-16 max-w-2xl mx-auto">
+                                <span className="text-xs font-mono font-bold tracking-[0.25em] text-indigo-400 block mb-3 uppercase">
+                                    {lang === 'en' ? 'IN-THE-WILD DEPLOYMENTS // METRICS' : lang === 'ro' ? 'AMPLASĂRI REALE // STATISTICI' : 'КАМПАНИИ В РЕАЛЬНОМ МИРЕ // МЕТРИКИ'}
+                                </span>
+                                <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
+                                    {lang === 'en' ? 'Seamless Physical Capture Instances' : lang === 'ro' ? 'Instanțe de Captură Fizică în Timp Real' : 'Интеграция воронок в физическом мире'}
+                                </h2>
+                                <p className="text-slate-400 text-sm mt-3 font-sans">
+                                    {lang === 'en' ? 'Explore real photographic captures of CallCapture systems placed directly on point-of-sales, luxury yard boards, and interactive booths.' : lang === 'ro' ? 'Explorează amplasările reale ale sistemelor CallCapture pe terminale de vânzare, panouri imobiliare premium sau standuri interactive.' : 'Изучите примеры размещения умных кодов CallCapture на точках продаж, баннерах недвижимости и выставочных стендах.'}
+                                </p>
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                                {/* Touchpoint 1 */}
+                                <div className="group bg-slate-900/30 border border-white/5 rounded-xl overflow-hidden hover:border-indigo-500/30 transition-all duration-300 flex flex-col justify-between">
+                                    <div className="relative aspect-square overflow-hidden bg-slate-950">
+                                        <img 
+                                            src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=600&q=80" 
+                                            alt="Cafe point-of-sale customer scan table" 
+                                            referrerPolicy="no-referrer"
+                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
+                                            <div className="font-mono text-[9px] text-indigo-300 uppercase tracking-widest bg-indigo-950/80 border border-indigo-500/20 px-2 py-1 rounded w-fit mb-1 pb-1">
+                                                DELIVERY SPEED
+                                            </div>
+                                            <div className="text-white text-xs font-bold font-mono">SMS GATE: &lt;1.6s</div>
+                                        </div>
+                                    </div>
+                                    <div className="p-5 text-left space-y-2">
+                                        <div className="flex items-center justify-between text-[10px] font-mono text-indigo-400 font-bold">
+                                            <span>#01 BOUTIQUE CAFES</span>
+                                            <span className="text-emerald-400 font-bold">● ACTIVE</span>
+                                        </div>
+                                        <h4 className="text-white font-bold text-sm tracking-tight font-sans">
+                                            {lang === 'en' ? 'Tabletop Coupon Stands' : lang === 'ro' ? 'Standuri Cupoane Cafenele' : 'Настольные тейбл-тенты'}
+                                        </h4>
+                                        <p className="text-slate-450 text-xs leading-relaxed font-sans">
+                                            {lang === 'en' ? 'Coupons delivered instantly into customer phones. Protects against fake profile collections.' : lang === 'ro' ? 'Cupoane livrate instant direct pe telefonul oaspeților. Protejează împotriva înregistrărilor false.' : 'Купоны доставляются на телефон гостя мгновенно. 100% защита от фейковых номеров.'}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Touchpoint 2 */}
+                                <div className="group bg-slate-900/30 border border-white/5 rounded-xl overflow-hidden hover:border-indigo-500/30 transition-all duration-300 flex flex-col justify-between">
+                                    <div className="relative aspect-square overflow-hidden bg-slate-950">
+                                        <img 
+                                            src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80" 
+                                            alt="Luxury residential lawn garden exterior panel" 
+                                            referrerPolicy="no-referrer"
+                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
+                                            <div className="font-mono text-[9px] text-indigo-300 uppercase tracking-widest bg-indigo-950/80 border border-indigo-500/20 px-2 py-1 rounded w-fit mb-1 pb-1">
+                                                CRM ROUTING
+                                            </div>
+                                            <div className="text-white text-xs font-bold font-mono font-sans">ZAPIER &amp; TELEGRAM</div>
+                                        </div>
+                                    </div>
+                                    <div className="p-5 text-left space-y-2">
+                                        <div className="flex items-center justify-between text-[10px] font-mono text-indigo-400 font-bold">
+                                            <span>#02 LUXURY VILLAS</span>
+                                            <span className="text-emerald-400 font-bold">● ACTIVE</span>
+                                        </div>
+                                        <h4 className="text-white font-bold text-sm tracking-tight font-sans">
+                                            {lang === 'en' ? 'Outdoor Yard Boards' : lang === 'ro' ? 'Panouri Imobiliare Curte' : 'Баннеры на загородных домах'}
+                                        </h4>
+                                        <p className="text-slate-455 text-xs leading-relaxed font-sans">
+                                            {lang === 'en' ? 'Homebuyers perform on-the-spot phone validation to instantly pull VR pricing PDFs.' : lang === 'ro' ? 'Cumpărătorii efectuează validarea pe loc pentru a debloca prezentarea PDF și turul virtual al vilei.' : 'Покупатели подтверждают номер на месте за секунды, чтобы открыть 3D-тур по вилле.'}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Touchpoint 3 */}
+                                <div className="group bg-slate-900/30 border border-white/5 rounded-xl overflow-hidden hover:border-indigo-500/30 transition-all duration-300 flex flex-col justify-between">
+                                    <div className="relative aspect-square overflow-hidden bg-slate-950">
+                                        <img 
+                                            src="https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?auto=format&fit=crop&w=600&q=80" 
+                                            alt="Trade show convention hall banners" 
+                                            referrerPolicy="no-referrer"
+                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
+                                            <div className="font-mono text-[9px] text-indigo-300 uppercase tracking-widest bg-indigo-950/80 border border-indigo-500/20 px-2 py-1 rounded w-fit mb-1 pb-1">
+                                                CONVERSION AVG
+                                            </div>
+                                            <div className="text-white text-xs font-bold font-mono">RATIO: ~81.4%</div>
+                                        </div>
+                                    </div>
+                                    <div className="p-5 text-left space-y-2">
+                                        <div className="flex items-center justify-between text-[10px] font-mono text-indigo-400 font-bold">
+                                            <span>#03 EXPO &amp; CONVENTIONS</span>
+                                            <span className="text-emerald-400 font-bold">● ACTIVE</span>
+                                        </div>
+                                        <h4 className="text-white font-bold text-sm tracking-tight font-sans">
+                                            {lang === 'en' ? 'Roll-up Stand Check-Ins' : lang === 'ro' ? 'Înscrieri Stand Evenimente' : 'Стенды на форумах и выставках'}
+                                        </h4>
+                                        <p className="text-slate-455 text-xs leading-relaxed font-sans">
+                                            {lang === 'en' ? 'Ditch business cards. Verify attendees via dynamic QR and instantly pipe to HubSpot CRM.' : lang === 'ro' ? 'Renunță la cărți de vizită din hârtie. Înregistrează oaspeții cu SMS OTP direct în baza ta de date.' : 'Откажитесь от бумажных визиток. Мгновенно заносите контакты гостей выставки в HubSpot.'}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Touchpoint 4 */}
+                                <div className="group bg-slate-900/30 border border-white/5 rounded-xl overflow-hidden hover:border-indigo-500/30 transition-all duration-300 flex flex-col justify-between">
+                                    <div className="relative aspect-square overflow-hidden bg-slate-950">
+                                        <img 
+                                            src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=600&q=80" 
+                                            alt="Retail store checkout counter and racks" 
+                                            referrerPolicy="no-referrer"
+                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
+                                            <div className="font-mono text-[9px] text-indigo-300 uppercase tracking-widest bg-indigo-950/80 border border-indigo-500/20 px-2 py-1 rounded w-fit mb-1 pb-1">
+                                                GATE SYSTEM
+                                            </div>
+                                            <div className="text-white text-xs font-bold font-mono">GUEST WI-FI CONNECT</div>
+                                        </div>
+                                    </div>
+                                    <div className="p-5 text-left space-y-2">
+                                        <div className="flex items-center justify-between text-[10px] font-mono text-indigo-400 font-bold">
+                                            <span>#04 RETAIL BOUTIQUES</span>
+                                            <span className="text-emerald-400 font-bold">● ACTIVE</span>
+                                        </div>
+                                        <h4 className="text-white font-bold text-sm tracking-tight font-sans">
+                                            {lang === 'en' ? 'Checkout Wi-Fi Portals' : lang === 'ro' ? 'Portal Wi-Fi de Plată' : 'Wi-Fi порталы на кассах'}
+                                        </h4>
+                                        <p className="text-slate-455 text-xs leading-relaxed font-sans">
+                                            {lang === 'en' ? 'Guests unlock safe high-speed boutique bandwidth only after checking handset connectivity.' : lang === 'ro' ? 'Vizitatorii deblochează acces securizat la internet doar după inspectarea conectivității mobilului lor.' : 'Покупатели получают доступ к Wi-Fi бутика только после быстрой проверки мобильной связи.'}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </section>
 
