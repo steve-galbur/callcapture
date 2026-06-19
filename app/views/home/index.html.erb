@@ -26,7 +26,7 @@
     <meta name="twitter:image" content="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=1200&h=630&fit=crop">
 
     <!-- Schema.org JSON-LD Structured Data for Google Rich Snippets -->
-    <script type="application/ld-json">
+    <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
@@ -61,11 +61,6 @@
                     fontFamily: {
                         sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
                         mono: ['JetBrains Mono', 'monospace'],
-                    },
-                    colors: {
-                        slate: {
-                            950: '#020617',
-                        }
                     }
                 }
             }
@@ -73,7 +68,7 @@
     </script>
 
     <!-- Google Fonts: Inter and JetBrains Mono -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet font-sans">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     
     <!-- Custom Keyframe Animations -->
     <style>
@@ -93,10 +88,10 @@
         html { scroll-behavior: smooth; }
     </style>
 
-    <!-- React and Babel CDNs -->
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Reliable, high-speed jsDelivr CDNs -->
+    <script src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.26.8/babel.min.js"></script>
 </head>
 <body class="bg-[#030712] text-slate-200 min-h-screen relative overflow-x-hidden selection:bg-indigo-500/30 selection:text-indigo-200">
 
@@ -104,6 +99,43 @@
 
     <script type="text/babel">
         const { useState, useEffect } = React;
+
+        // Safe Storage Helpers to prevent DOMExceptions under file:// protocol or private window
+        const safeSessionStorage = {
+            memoryStore: {},
+            getItem(key) {
+                try {
+                    return sessionStorage.getItem(key);
+                } catch (e) {
+                    return this.memoryStore[key] || null;
+                }
+            },
+            setItem(key, value) {
+                try {
+                    sessionStorage.setItem(key, value);
+                } catch (e) {
+                    this.memoryStore[key] = String(value);
+                }
+            }
+        };
+
+        const safeLocalStorage = {
+            memoryStore: {},
+            getItem(key) {
+                try {
+                    return localStorage.getItem(key);
+                } catch (e) {
+                    return this.memoryStore[key] || null;
+                }
+            },
+            setItem(key, value) {
+                try {
+                    localStorage.setItem(key, value);
+                } catch (e) {
+                    this.memoryStore[key] = String(value);
+                }
+            }
+        };
 
         // Custom Inline Icons Components for total reliability and responsive design
         const QrCodeIcon = ({ className }) => (
@@ -320,20 +352,14 @@
             const [password, setPassword] = useState("");
             const [loginError, setLoginError] = useState("");
             const [isAuthed, setIsAuthed] = useState(() => {
-                try {
-                    return sessionStorage.getItem("cc_admin_authed") === "true";
-                } catch (_) {
-                    return false;
-                }
+                return safeSessionStorage.getItem("cc_admin_authed") === "true";
             });
 
             const handleLoginSubmit = (e) => {
                 e.preventDefault();
                 if (username === "admin" && password === "12345") {
                     setIsAuthed(true);
-                    try {
-                        sessionStorage.setItem("cc_admin_authed", "true");
-                    } catch (_) {}
+                    safeSessionStorage.setItem("cc_admin_authed", "true");
                     setLoginError("");
                 } else {
                     setLoginError("Invalid credentials. Access Denied.");
@@ -354,7 +380,7 @@
             const [smtpDiagnosticMsg, setSmtpDiagnosticMsg] = useState("");
 
             useEffect(() => {
-                const storedQrs = localStorage.getItem("callcapture_qrs");
+                const storedQrs = safeLocalStorage.getItem("callcapture_qrs");
                 if (storedQrs) {
                     try {
                         setQrs(JSON.parse(storedQrs));
@@ -365,7 +391,7 @@
                     seedAndLoadQrs();
                 }
 
-                const storedLeads = localStorage.getItem("callcapture_leads");
+                const storedLeads = safeLocalStorage.getItem("callcapture_leads");
                 if (storedLeads) {
                     try {
                         setLeads(JSON.parse(storedLeads));
@@ -384,7 +410,7 @@
                     { id: "qr_booth_12", label: "Forum Expo Booth Sign-In", target: "https://callcapture.com/targets/expo-digital-brochure", totalScans: 89, activeGate: "SMS-OTP", created: "2026-06-01" },
                     { id: "qr_wifi_general", label: "Free Guest Wi-Fi Portal", target: "https://callcapture.com/targets/wifi-success-coupon", totalScans: 233, activeGate: "SMS-OTP", created: "2026-05-20" }
                 ];
-                localStorage.setItem("callcapture_qrs", JSON.stringify(defaultQrs));
+                safeLocalStorage.setItem("callcapture_qrs", JSON.stringify(defaultQrs));
                 setQrs(defaultQrs);
             };
 
@@ -396,17 +422,17 @@
                     { id: "4", name: "Alice Fletcher", email: "alice@fletcherdesign.co.uk", phone: "+44 20 7946 0192", source: "Free Guest Wi-Fi Portal", verified: true, time: "2026-06-04 18:22" },
                     { id: "5", name: "Ion Codreanu", email: "ion.codreanu@outlook.com", phone: "+373 60 258 494", source: "Simulator Phone Input", verified: true, time: "2026-06-04 15:30" }
                 ];
-                localStorage.setItem("callcapture_leads", JSON.stringify(defaultLeads));
+                safeLocalStorage.setItem("callcapture_leads", JSON.stringify(defaultLeads));
                 setLeads(defaultLeads);
             };
 
             const updateCachedQrs = (updatedList) => {
-                localStorage.setItem("callcapture_qrs", JSON.stringify(updatedList));
+                safeLocalStorage.setItem("callcapture_qrs", JSON.stringify(updatedList));
                 setQrs(updatedList);
             };
 
             const updateCachedLeads = (updatedList) => {
-                localStorage.setItem("callcapture_leads", JSON.stringify(updatedList));
+                safeLocalStorage.setItem("callcapture_leads", JSON.stringify(updatedList));
                 setLeads(updatedList);
             };
 
